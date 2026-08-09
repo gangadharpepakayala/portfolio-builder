@@ -1,0 +1,77 @@
+<section
+  *ngIf="state.portfolio().certifications.visible"
+  id="certifications"
+  (click)="selectCertifications($event)"
+  [class.canvas-section-selected]="!state.previewMode() && state.selectedSectionId() === 'certifications'"
+  data-section-title="Certifications Section"
+  class="w-full py-20 px-6 cursor-pointer transition-all border-t border-white/5 select-none"
+  [style.backgroundColor]="state.portfolio().certifications.bgColor || state.portfolio().colors.background"
+>
+  <div class="max-w-6xl mx-auto space-y-12">
+    <!-- Header -->
+    <div class="text-center space-y-2">
+      <h2
+        class="text-3xl sm:text-4xl font-extrabold tracking-tight"
+        [style.color]="state.portfolio().certifications.titleColor || state.portfolio().colors.heading"
+      >
+        {{ state.portfolio().certifications.title }}
+      </h2>
+      <p class="text-xs sm:text-sm max-w-xl mx-auto font-medium" [style.color]="state.portfolio().colors.text">
+        {{ state.portfolio().certifications.subtitle }}
+      </p>
+    </div>
+
+    <!-- Certifications Cards (Side-by-Side Icon + Title Layout) -->
+    <div class="flex flex-wrap justify-center gap-6">
+      <div
+        *ngFor="let c of state.portfolio().certifications.certifications"
+        class="w-full sm:w-[calc(50%-16px)] max-w-[580px] p-6 rounded-2xl border space-y-4 shadow-md transition-all duration-300 hover:-translate-y-1 flex flex-col justify-between"
+        [style.backgroundColor]="state.portfolio().colors.cardBg"
+        [style.borderColor]="state.portfolio().colors.borderColor"
+      >
+        <div class="space-y-3">
+          <div class="flex items-start justify-between gap-3">
+            <div class="flex items-start gap-3.5">
+              <div class="w-10 h-10 rounded-xl bg-indigo-500/10 flex items-center justify-center text-indigo-400 shrink-0 border border-indigo-500/20 mt-0.5">
+                <app-icon name="award" [size]="20"></app-icon>
+              </div>
+
+              <div class="space-y-1">
+                <h3 class="text-base sm:text-lg font-bold leading-snug" [style.color]="state.portfolio().colors.heading">
+                  {{ c.title }}
+                </h3>
+                <h4 class="text-xs font-semibold" [style.color]="state.portfolio().colors.primary">
+                  {{ c.issuer }}
+                </h4>
+              </div>
+            </div>
+
+            <span *ngIf="c.issueDate" class="text-xs font-bold px-2.5 py-1 rounded-full bg-white/5 font-mono text-slate-300 shrink-0">
+              {{ c.issueDate }}
+            </span>
+          </div>
+
+          <p *ngIf="c.description" class="text-xs text-slate-300 leading-relaxed">
+            {{ c.description }}
+          </p>
+        </div>
+
+        <div *ngIf="c.credentialId || c.credentialUrl" class="pt-3 border-t border-white/5 space-y-2">
+          <div *ngIf="c.credentialId" class="text-[11px] font-mono text-slate-400 truncate">
+            ID: <span class="text-slate-200">{{ c.credentialId }}</span>
+          </div>
+          <a
+            *ngIf="c.credentialUrl"
+            [href]="c.credentialUrl"
+            [target]="state.previewMode() ? '_blank' : '_self'"
+            (click)="onLinkClick($event)"
+            class="inline-flex items-center gap-1.5 text-xs font-bold text-indigo-400 hover:text-indigo-300 hover:underline"
+          >
+            <span>Verify Credential</span>
+            <app-icon name="external-link" [size]="12"></app-icon>
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

@@ -1,0 +1,106 @@
+<aside class="w-[440px] bg-slate-900 border-l border-slate-800 flex flex-col h-[calc(100vh-4rem)] select-none z-40">
+  <!-- Side Panel Header with Mode Selection -->
+  <div class="p-3 pb-4 border-b border-slate-800 bg-slate-950/90 space-y-3">
+    <div class="flex items-center justify-between">
+      <div class="flex items-center gap-2">
+        <app-icon name="sliders-horizontal" [size]="18" class="text-indigo-400"></app-icon>
+        <h2 class="text-sm font-extrabold text-slate-100 uppercase tracking-wide">
+          {{ viewMode === 'section' ? (state.selectedSectionId() | uppercase) + ' EDITOR' : 'GLOBAL SETTINGS' }}
+        </h2>
+      </div>
+
+      <div class="flex items-center bg-slate-900 p-1 rounded-xl border border-slate-800">
+        <button
+          (click)="viewMode = 'section'"
+          [class.bg-indigo-600]="viewMode === 'section'"
+          [class.text-white]="viewMode === 'section'"
+          [class.text-slate-400]="viewMode !== 'section'"
+          class="px-3 py-1.5 text-xs font-bold rounded-lg transition-all cursor-pointer shadow-sm"
+        >
+          Selected Section
+        </button>
+        <button
+          (click)="viewMode = 'global'"
+          [class.bg-indigo-600]="viewMode === 'global'"
+          [class.text-white]="viewMode === 'global'"
+          [class.text-slate-400]="viewMode !== 'global'"
+          class="px-3 py-1.5 text-xs font-bold rounded-lg transition-all cursor-pointer shadow-sm"
+        >
+          Global Customization
+        </button>
+      </div>
+    </div>
+
+    <!-- Global Settings Sub-tabs -->
+    <div *ngIf="viewMode === 'global'" class="flex items-center gap-1 overflow-x-auto scrollbar-thin pb-2 pt-1">
+      <button
+        *ngFor="let tab of globalTabs"
+        (click)="state.setActiveTab(tab.id)"
+        [class.bg-indigo-600]="state.activeTab() === tab.id"
+        [class.text-white]="state.activeTab() === tab.id"
+        [class.text-slate-400]="state.activeTab() !== tab.id"
+        class="flex items-center gap-1 px-2.5 py-1.5 rounded-lg text-xs font-bold whitespace-nowrap transition-all cursor-pointer border border-slate-800"
+      >
+        <app-icon [name]="tab.icon" [size]="14"></app-icon>
+        <span>{{ tab.label }}</span>
+      </button>
+    </div>
+
+    <!-- Quick Section Switcher Pill Bar -->
+    <div *ngIf="viewMode === 'section'" class="flex items-center gap-1 overflow-x-auto scrollbar-thin pb-2 pt-1 mb-1">
+      <button
+        *ngFor="let sec of sectionNavs"
+        (click)="state.selectSection(sec.id)"
+        [class.bg-indigo-600]="state.selectedSectionId() === sec.id"
+        [class.text-white]="state.selectedSectionId() === sec.id"
+        [class.text-slate-400]="state.selectedSectionId() !== sec.id"
+        class="px-2.5 py-1.5 rounded-lg text-xs font-bold capitalize whitespace-nowrap bg-slate-900 border border-slate-800 transition-all cursor-pointer shadow-sm shrink-0"
+      >
+        {{ sec.label }}
+      </button>
+    </div>
+  </div>
+
+  <!-- Main Content Container -->
+  <div class="flex-1 overflow-y-auto p-5 custom-scrollbar">
+    <!-- Mode 1: Section Inspector (Elements + Style Controls) -->
+    <ng-container *ngIf="viewMode === 'section'">
+      <ng-container [ngSwitch]="state.selectedSectionId()">
+        <app-hero-inspector *ngSwitchCase="'hero'"></app-hero-inspector>
+        <app-about-inspector *ngSwitchCase="'about'"></app-about-inspector>
+        <app-skills-inspector *ngSwitchCase="'skills'"></app-skills-inspector>
+        <app-experience-inspector *ngSwitchCase="'experience'"></app-experience-inspector>
+        <app-projects-inspector *ngSwitchCase="'projects'"></app-projects-inspector>
+        <app-education-inspector *ngSwitchCase="'education'"></app-education-inspector>
+        <app-certifications-inspector *ngSwitchCase="'certifications'"></app-certifications-inspector>
+        <app-achievements-inspector *ngSwitchCase="'achievements'"></app-achievements-inspector>
+        <app-testimonials-inspector *ngSwitchCase="'testimonials'"></app-testimonials-inspector>
+        <app-contact-inspector *ngSwitchCase="'contact'"></app-contact-inspector>
+        <app-footer-inspector *ngSwitchCase="'footer'"></app-footer-inspector>
+        <app-navbar-inspector *ngSwitchCase="'navbar'"></app-navbar-inspector>
+
+        <div *ngSwitchDefault class="text-center py-16 px-4 space-y-3">
+          <div class="w-14 h-14 rounded-full bg-indigo-500/10 border border-indigo-500/20 flex items-center justify-center mx-auto text-indigo-400">
+            <app-icon name="mouse-pointer-click" [size]="28"></app-icon>
+          </div>
+          <h3 class="text-base font-bold text-slate-200">Click Any Section</h3>
+          <p class="text-xs text-slate-400 leading-relaxed">
+            Click any section inside the main portfolio canvas on the left to edit its text, images, background colors & styles.
+          </p>
+        </div>
+      </ng-container>
+    </ng-container>
+
+    <!-- Mode 2: Global Settings -->
+    <ng-container *ngIf="viewMode === 'global'">
+      <ng-container [ngSwitch]="state.activeTab()">
+        <app-tab-theme *ngSwitchCase="'theme'"></app-tab-theme>
+        <app-tab-typography *ngSwitchCase="'typography'"></app-tab-typography>
+        <app-tab-images *ngSwitchCase="'images'"></app-tab-images>
+        <app-tab-sections *ngSwitchCase="'sections'"></app-tab-sections>
+        <app-tab-layout *ngSwitchCase="'layout'"></app-tab-layout>
+        <app-tab-export *ngSwitchCase="'export'"></app-tab-export>
+      </ng-container>
+    </ng-container>
+  </div>
+</aside>

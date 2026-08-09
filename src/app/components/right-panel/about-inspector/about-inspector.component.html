@@ -1,0 +1,285 @@
+<div class="space-y-5">
+  <div class="flex items-center justify-between pb-3 border-b border-slate-800">
+    <h3 class="text-sm font-bold text-indigo-400 uppercase tracking-wider">About Section Editor & Styles</h3>
+    <span class="text-xs bg-indigo-500/10 text-indigo-400 px-2.5 py-1 rounded font-mono font-bold">#about</span>
+  </div>
+
+  <!-- About Image Picker (Upload File OR Image Link) -->
+  <app-image-picker
+    label="About Feature Image (Optional)"
+    [imageUrl]="about.image || ''"
+    (imageUrlChange)="update({ image: $event })"
+  ></app-image-picker>
+
+  <!-- Section Title & Title Color -->
+  <div class="space-y-1.5">
+    <div class="flex justify-between items-center">
+      <label class="text-xs font-bold text-slate-200">Section Title</label>
+      <div class="flex items-center gap-1.5">
+        <span class="text-xs text-slate-400">Title Color</span>
+        <input
+          type="color"
+          [value]="about.titleColor || state.portfolio().colors.heading"
+          (input)="update({ titleColor: $any($event.target).value })"
+          class="w-7 h-7 rounded-lg border border-slate-700 bg-transparent cursor-pointer p-0.5"
+        />
+        <button
+          *ngIf="about.titleColor"
+          (click)="update({ titleColor: undefined })"
+          class="p-1 text-slate-400 hover:text-indigo-400 hover:bg-slate-800 rounded-lg transition-colors cursor-pointer"
+          title="Reset Title Color to default"
+        >
+          <app-icon name="rotate-ccw" [size]="14"></app-icon>
+        </button>
+      </div>
+    </div>
+    <input
+      type="text"
+      [ngModel]="about.title"
+      (ngModelChange)="update({ title: $event })"
+      class="w-full bg-slate-900 border border-slate-700 text-sm font-semibold text-slate-100 rounded-xl p-3 focus:outline-none focus:border-indigo-500"
+    />
+  </div>
+
+  <!-- Subtitle & Subtitle Color -->
+  <div class="space-y-1.5">
+    <div class="flex justify-between items-center">
+      <label class="text-xs font-bold text-slate-200">Subtitle</label>
+      <div class="flex items-center gap-1.5">
+        <span class="text-xs text-slate-400">Subtitle Color</span>
+        <input
+          type="color"
+          [value]="about.subtitleColor || state.portfolio().colors.text"
+          (input)="update({ subtitleColor: $any($event.target).value })"
+          class="w-7 h-7 rounded-lg border border-slate-700 bg-transparent cursor-pointer p-0.5"
+        />
+        <button
+          *ngIf="about.subtitleColor"
+          (click)="update({ subtitleColor: undefined })"
+          class="p-1 text-slate-400 hover:text-indigo-400 hover:bg-slate-800 rounded-lg transition-colors cursor-pointer"
+          title="Reset Subtitle Color to default"
+        >
+          <app-icon name="rotate-ccw" [size]="14"></app-icon>
+        </button>
+      </div>
+    </div>
+    <input
+      type="text"
+      [ngModel]="about.subtitle"
+      (ngModelChange)="update({ subtitle: $event })"
+      class="w-full bg-slate-900 border border-slate-700 text-sm font-semibold text-slate-100 rounded-xl p-3 focus:outline-none focus:border-indigo-500"
+    />
+  </div>
+
+  <!-- Editable Personal Details Labels & Values Grid -->
+  <div class="space-y-3 pt-3 border-t border-slate-800">
+    <div class="flex items-center justify-between">
+      <label class="text-xs font-extrabold text-slate-100 uppercase tracking-wide">Personal Info Fields & Labels</label>
+      <button
+        (click)="addPersonalDetail()"
+        class="flex items-center gap-1 text-xs font-bold text-white bg-indigo-600 hover:bg-indigo-500 px-2.5 py-1 rounded-lg transition-colors cursor-pointer"
+      >
+        <app-icon name="plus" [size]="12"></app-icon> Add Field
+      </button>
+    </div>
+
+    <p class="text-xs text-slate-400">Edit both the label name (e.g. FULL NAME, DOB) and its corresponding value below.</p>
+
+    <div class="space-y-2.5 pt-1">
+      <div
+        *ngFor="let item of (about.customDetails || []); let i = index; trackBy: trackById"
+        class="p-3 rounded-xl border border-slate-800 bg-slate-900/70 space-y-2"
+      >
+        <div class="flex items-center justify-between">
+          <span class="text-[10px] font-extrabold text-slate-400 uppercase">Field #{{ i + 1 }}</span>
+          <button
+            (click)="deletePersonalDetail(item.id, item.label)"
+            class="p-1 text-rose-400 hover:text-rose-300 hover:bg-slate-800 rounded transition-colors cursor-pointer"
+            title="Delete Field"
+          >
+            <app-icon name="trash-2" [size]="14"></app-icon>
+          </button>
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-2">
+          <div class="space-y-1">
+            <label class="text-[10px] font-bold text-slate-400">Label Name</label>
+            <input
+              type="text"
+              placeholder="Label Name"
+              [ngModel]="item.label"
+              (ngModelChange)="updatePersonalDetail(item.id, { label: $event })"
+              class="w-full bg-slate-950 border border-slate-700 text-xs font-bold text-indigo-300 rounded-lg p-2"
+            />
+          </div>
+
+          <div class="space-y-1">
+            <label class="text-[10px] font-bold text-slate-400">Field Value</label>
+            <input
+              type="text"
+              placeholder="Value"
+              [ngModel]="item.value"
+              (ngModelChange)="updatePersonalDetail(item.id, { value: $event })"
+              class="w-full bg-slate-950 border border-slate-700 text-xs font-bold text-slate-100 rounded-lg p-2"
+            />
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Section Background Fill Override -->
+  <div class="space-y-1.5 p-3 rounded-xl border border-slate-800 bg-slate-900/60">
+    <div class="flex justify-between items-center">
+      <label class="text-xs font-bold text-slate-200">Section Background Color</label>
+      <div class="flex items-center gap-1.5">
+        <input
+          type="color"
+          [value]="about.bgColor || state.portfolio().colors.sectionBg"
+          (input)="update({ bgColor: $any($event.target).value })"
+          class="w-8 h-8 rounded-lg border border-slate-700 bg-transparent cursor-pointer p-0.5"
+        />
+        <button
+          *ngIf="about.bgColor"
+          (click)="update({ bgColor: undefined })"
+          class="p-1 text-slate-400 hover:text-indigo-400 hover:bg-slate-800 rounded-lg transition-colors cursor-pointer"
+          title="Reset Background Color to default"
+        >
+          <app-icon name="rotate-ccw" [size]="14"></app-icon>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Description -->
+  <div class="space-y-1.5">
+    <label class="text-xs font-bold text-slate-200">Bio Description</label>
+    <textarea
+      rows="4"
+      [ngModel]="about.description"
+      (ngModelChange)="update({ description: $event })"
+      class="w-full bg-slate-900 border border-slate-700 text-sm font-semibold text-slate-100 rounded-xl p-3 focus:outline-none focus:border-indigo-500"
+    ></textarea>
+  </div>
+
+  <!-- Key Highlights List -->
+  <div class="space-y-3 pt-3 border-t border-slate-800">
+    <div class="flex items-center justify-between">
+      <label class="text-xs font-extrabold text-slate-100 uppercase tracking-wide">Key Highlights Bullet Points</label>
+      <button
+        (click)="addHighlight()"
+        class="flex items-center gap-1 text-xs font-bold text-white bg-indigo-600 hover:bg-indigo-500 px-2.5 py-1 rounded-lg transition-colors cursor-pointer"
+      >
+        <app-icon name="plus" [size]="12"></app-icon> Add Highlight
+      </button>
+    </div>
+
+    <div class="space-y-2">
+      <div
+        *ngFor="let h of about.highlights; let i = index"
+        class="flex items-center gap-2"
+      >
+        <input
+          type="text"
+          [ngModel]="h"
+          (ngModelChange)="updateHighlight(i, $event)"
+          class="flex-1 bg-slate-900 border border-slate-700 text-xs text-slate-100 rounded-lg p-2.5"
+        />
+        <button
+          (click)="deleteHighlight(i)"
+          class="p-2 text-rose-400 hover:text-rose-300 hover:bg-slate-800 rounded-lg cursor-pointer transition-colors"
+          title="Delete Highlight"
+        >
+          <app-icon name="trash-2" [size]="16"></app-icon>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Key Metrics & Counter Badges -->
+  <div class="space-y-3 pt-3 border-t border-slate-800">
+    <div class="flex items-center justify-between">
+      <label class="text-xs font-extrabold text-slate-100 uppercase tracking-wide">Key Metrics & Counter Badges</label>
+      <button
+        *ngIf="hasAnyMetrics"
+        (click)="deleteEntireMetricsSection()"
+        class="p-1.5 text-rose-400 hover:text-rose-300 bg-rose-500/10 hover:bg-rose-500/20 rounded-lg transition-colors cursor-pointer"
+        title="Delete Entire Key Metrics Section"
+      >
+        <app-icon name="trash-2" [size]="16"></app-icon>
+      </button>
+    </div>
+
+    <div *ngIf="hasAnyMetrics" class="grid grid-cols-1 gap-2.5 pt-1">
+      <!-- Experience Badge -->
+      <div *ngIf="about.experienceYears !== undefined && about.experienceYears !== null" class="flex items-center justify-between p-2.5 rounded-xl border border-slate-800 bg-slate-900/60">
+        <div class="space-y-0.5 flex-1 pr-2">
+          <label class="text-[10px] font-bold text-slate-400 uppercase">Years Experience</label>
+          <input
+            type="text"
+            [ngModel]="about.experienceYears"
+            (ngModelChange)="update({ experienceYears: $event })"
+            class="w-full bg-slate-950 border border-slate-700 text-xs font-bold text-slate-100 rounded-lg p-2"
+          />
+        </div>
+        <button
+          (click)="deleteMetric('experienceYears')"
+          class="p-2 text-rose-400 hover:text-rose-300 hover:bg-slate-800 rounded-lg transition-colors cursor-pointer"
+          title="Delete Experience Counter"
+        >
+          <app-icon name="trash-2" [size]="16"></app-icon>
+        </button>
+      </div>
+
+      <!-- Projects Badge -->
+      <div *ngIf="about.projectsCount !== undefined && about.projectsCount !== null" class="flex items-center justify-between p-2.5 rounded-xl border border-slate-800 bg-slate-900/60">
+        <div class="space-y-0.5 flex-1 pr-2">
+          <label class="text-[10px] font-bold text-slate-400 uppercase">Projects Completed</label>
+          <input
+            type="text"
+            [ngModel]="about.projectsCount"
+            (ngModelChange)="update({ projectsCount: $event })"
+            class="w-full bg-slate-950 border border-slate-700 text-xs font-bold text-slate-100 rounded-lg p-2"
+          />
+        </div>
+        <button
+          (click)="deleteMetric('projectsCount')"
+          class="p-2 text-rose-400 hover:text-rose-300 hover:bg-slate-800 rounded-lg transition-colors cursor-pointer"
+          title="Delete Projects Counter"
+        >
+          <app-icon name="trash-2" [size]="16"></app-icon>
+        </button>
+      </div>
+
+      <!-- Clients Badge -->
+      <div *ngIf="about.clientsCount !== undefined && about.clientsCount !== null" class="flex items-center justify-between p-2.5 rounded-xl border border-slate-800 bg-slate-900/60">
+        <div class="space-y-0.5 flex-1 pr-2">
+          <label class="text-[10px] font-bold text-slate-400 uppercase">Happy Clients</label>
+          <input
+            type="text"
+            [ngModel]="about.clientsCount"
+            (ngModelChange)="update({ clientsCount: $event })"
+            class="w-full bg-slate-950 border border-slate-700 text-xs font-bold text-slate-100 rounded-lg p-2"
+          />
+        </div>
+        <button
+          (click)="deleteMetric('clientsCount')"
+          class="p-2 text-rose-400 hover:text-rose-300 hover:bg-slate-800 rounded-lg transition-colors cursor-pointer"
+          title="Delete Clients Counter"
+        >
+          <app-icon name="trash-2" [size]="16"></app-icon>
+        </button>
+      </div>
+    </div>
+
+    <div *ngIf="!hasAnyMetrics" class="p-3 text-center border border-dashed border-slate-800 rounded-xl space-y-2">
+      <p class="text-xs text-slate-400">Key metrics counters section is currently deleted/hidden.</p>
+      <button
+        (click)="restoreKeyMetrics()"
+        class="text-xs font-bold text-indigo-400 hover:text-indigo-300 bg-indigo-500/10 px-3 py-1.5 rounded-lg transition-colors cursor-pointer"
+      >
+        + Restore Key Metrics Counters
+      </button>
+    </div>
+  </div>
+</div>

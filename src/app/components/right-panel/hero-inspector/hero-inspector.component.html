@@ -1,0 +1,186 @@
+<div class="space-y-5">
+  <div class="flex items-center justify-between pb-3 border-b border-slate-800">
+    <h3 class="text-sm font-bold text-indigo-400 uppercase tracking-wider">Hero Section Editor</h3>
+    <span class="text-xs bg-indigo-500/10 text-indigo-400 px-2.5 py-1 rounded font-mono font-bold">#hero</span>
+  </div>
+
+  <!-- Hero Profile Image Picker (Upload File OR Image Link) -->
+  <app-image-picker
+    label="Profile / Avatar Image"
+    [imageUrl]="hero.profileImage || ''"
+    (imageUrlChange)="update({ profileImage: $event })"
+  ></app-image-picker>
+
+  <!-- Name & Color -->
+  <div class="space-y-1.5">
+    <div class="flex justify-between items-center">
+      <label class="text-xs font-bold text-slate-200">Full Name</label>
+      <div class="flex items-center gap-1.5">
+        <span class="text-xs text-slate-400">Color</span>
+        <input
+          type="color"
+          [value]="hero.nameColor || state.portfolio().colors.heading"
+          (input)="update({ nameColor: $any($event.target).value })"
+          class="w-7 h-7 rounded-lg border border-slate-700 bg-transparent cursor-pointer p-0.5"
+        />
+        <button
+          *ngIf="hero.nameColor"
+          (click)="update({ nameColor: undefined })"
+          class="p-1 text-slate-400 hover:text-indigo-400 hover:bg-slate-800 rounded-lg transition-colors cursor-pointer"
+          title="Reset Name Color"
+        >
+          <app-icon name="rotate-ccw" [size]="14"></app-icon>
+        </button>
+      </div>
+    </div>
+    <input
+      type="text"
+      [ngModel]="hero.name"
+      (ngModelChange)="update({ name: $event })"
+      class="w-full bg-slate-900 border border-slate-700 text-sm font-semibold text-slate-100 rounded-xl p-3 focus:outline-none focus:border-indigo-500"
+    />
+  </div>
+
+  <!-- Role / Tagline & Color -->
+  <div class="space-y-1.5">
+    <div class="flex justify-between items-center">
+      <label class="text-xs font-bold text-slate-200">Role / Tagline</label>
+      <div class="flex items-center gap-1.5">
+        <span class="text-xs text-slate-400">Color</span>
+        <input
+          type="color"
+          [value]="hero.roleColor || state.portfolio().colors.primary"
+          (input)="update({ roleColor: $any($event.target).value })"
+          class="w-7 h-7 rounded-lg border border-slate-700 bg-transparent cursor-pointer p-0.5"
+        />
+        <button
+          *ngIf="hero.roleColor"
+          (click)="update({ roleColor: undefined })"
+          class="p-1 text-slate-400 hover:text-indigo-400 hover:bg-slate-800 rounded-lg transition-colors cursor-pointer"
+          title="Reset Role Color"
+        >
+          <app-icon name="rotate-ccw" [size]="14"></app-icon>
+        </button>
+      </div>
+    </div>
+    <input
+      type="text"
+      [ngModel]="hero.role"
+      (ngModelChange)="update({ role: $event })"
+      class="w-full bg-slate-900 border border-slate-700 text-sm font-semibold text-slate-100 rounded-xl p-3 focus:outline-none focus:border-indigo-500"
+    />
+  </div>
+
+  <!-- Description & Color -->
+  <div class="space-y-1.5">
+    <div class="flex justify-between items-center">
+      <label class="text-xs font-bold text-slate-200">Intro Bio Description</label>
+      <div class="flex items-center gap-1.5">
+        <span class="text-xs text-slate-400">Color</span>
+        <input
+          type="color"
+          [value]="hero.descColor || state.portfolio().colors.text"
+          (input)="update({ descColor: $any($event.target).value })"
+          class="w-7 h-7 rounded-lg border border-slate-700 bg-transparent cursor-pointer p-0.5"
+        />
+        <button
+          *ngIf="hero.descColor"
+          (click)="update({ descColor: undefined })"
+          class="p-1 text-slate-400 hover:text-indigo-400 hover:bg-slate-800 rounded-lg transition-colors cursor-pointer"
+          title="Reset Description Color"
+        >
+          <app-icon name="rotate-ccw" [size]="14"></app-icon>
+        </button>
+      </div>
+    </div>
+    <textarea
+      rows="3"
+      [ngModel]="hero.description"
+      (ngModelChange)="update({ description: $event })"
+      class="w-full bg-slate-900 border border-slate-700 text-sm font-semibold text-slate-100 rounded-xl p-3 focus:outline-none focus:border-indigo-500"
+    ></textarea>
+  </div>
+
+  <!-- RESUME DOCUMENT UPLOAD & BUTTON CONTROLS -->
+  <div class="space-y-3 p-4 rounded-xl border border-indigo-500/30 bg-indigo-950/20">
+    <div class="flex items-center justify-between">
+      <div class="flex items-center gap-2">
+        <app-icon name="file-text" [size]="16" class="text-indigo-400"></app-icon>
+        <label class="text-xs font-extrabold text-slate-100 uppercase tracking-wide">Resume Document & Button</label>
+      </div>
+      <span *ngIf="hero.resumeUrl" class="text-[10px] font-bold text-emerald-400 bg-emerald-500/10 px-2 py-0.5 rounded border border-emerald-500/20">
+        ✓ Resume Uploaded
+      </span>
+    </div>
+
+    <!-- Resume Primary Button Label -->
+    <div class="space-y-1">
+      <label class="text-[11px] font-bold text-slate-300">Button Label</label>
+      <input
+        type="text"
+        [ngModel]="hero.ctaPrimaryLabel"
+        (ngModelChange)="update({ ctaPrimaryLabel: $event })"
+        placeholder="Resume"
+        class="w-full bg-slate-950 border border-slate-700 text-xs font-extrabold text-slate-100 rounded-lg p-2.5"
+      />
+    </div>
+
+    <!-- Resume File Upload Input -->
+    <div class="space-y-1.5 pt-1">
+      <label class="text-[11px] font-bold text-slate-300">Upload Resume File (PDF / DOC)</label>
+      <div class="flex items-center gap-2">
+        <label class="flex-1 flex items-center justify-center gap-2 px-3 py-2.5 rounded-lg border border-dashed border-indigo-500/40 bg-slate-900 hover:bg-slate-800 transition-colors cursor-pointer text-xs font-bold text-indigo-300">
+          <app-icon name="upload" [size]="14"></app-icon>
+          <span>{{ hero.resumeFileName ? hero.resumeFileName : 'Choose PDF or Document' }}</span>
+          <input
+            type="file"
+            accept=".pdf,.doc,.docx"
+            (change)="onResumeFileSelected($event)"
+            class="hidden"
+          />
+        </label>
+        <button
+          *ngIf="hero.resumeUrl"
+          (click)="clearResumeFile()"
+          class="p-2 text-rose-400 hover:bg-slate-800 rounded-lg transition-colors cursor-pointer"
+          title="Remove Resume File"
+        >
+          <app-icon name="trash-2" [size]="16"></app-icon>
+        </button>
+      </div>
+    </div>
+
+    <!-- Direct Resume Link (Optional Alternative) -->
+    <div class="space-y-1 pt-1">
+      <label class="text-[11px] font-bold text-slate-400">Or Direct Resume URL / Link (e.g. Google Drive)</label>
+      <input
+        type="text"
+        [ngModel]="hero.ctaPrimaryUrl"
+        (ngModelChange)="update({ ctaPrimaryUrl: $event })"
+        placeholder="https://drive.google.com/..."
+        class="w-full bg-slate-950 border border-slate-700 text-xs font-mono text-slate-300 rounded-lg p-2.5"
+      />
+    </div>
+  </div>
+
+  <!-- Secondary CTA Button (Contact / Touch) -->
+  <div class="space-y-2 p-3 rounded-xl border border-slate-800 bg-slate-900/60">
+    <label class="text-xs font-bold text-slate-200">Secondary CTA Button</label>
+    <div class="grid grid-cols-2 gap-2">
+      <input
+        type="text"
+        placeholder="Button Label"
+        [ngModel]="hero.ctaSecondaryLabel"
+        (ngModelChange)="update({ ctaSecondaryLabel: $event })"
+        class="bg-slate-950 border border-slate-700 text-xs font-bold text-slate-100 rounded-lg p-2.5"
+      />
+      <input
+        type="text"
+        placeholder="Target Link (#contact)"
+        [ngModel]="hero.ctaSecondaryUrl"
+        (ngModelChange)="update({ ctaSecondaryUrl: $event })"
+        class="bg-slate-950 border border-slate-700 text-xs font-mono text-slate-300 rounded-lg p-2.5"
+      />
+    </div>
+  </div>
+</div>

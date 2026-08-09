@@ -1,0 +1,134 @@
+<div class="space-y-5">
+  <div class="flex items-center justify-between pb-3 border-b border-slate-800">
+    <h3 class="text-sm font-bold text-indigo-400 uppercase tracking-wider">Certifications & Credentials</h3>
+    <button
+      (click)="addCertification()"
+      class="flex items-center gap-1.5 text-xs font-bold text-white bg-indigo-600 hover:bg-indigo-500 px-3 py-1.5 rounded-lg transition-colors cursor-pointer shadow-sm"
+    >
+      <app-icon name="plus" [size]="14"></app-icon> Add Certificate
+    </button>
+  </div>
+
+  <!-- Title & Title Color -->
+  <div class="space-y-1.5">
+    <div class="flex justify-between items-center">
+      <label class="text-xs font-bold text-slate-200">Section Title</label>
+      <div class="flex items-center gap-1.5">
+        <span class="text-xs text-slate-400">Title Color</span>
+        <input
+          type="color"
+          [value]="certSection.titleColor || state.portfolio().colors.heading"
+          (input)="updateSection({ titleColor: $any($event.target).value })"
+          class="w-7 h-7 rounded-lg border border-slate-700 bg-transparent cursor-pointer p-0.5"
+        />
+        <button
+          *ngIf="certSection.titleColor"
+          (click)="updateSection({ titleColor: undefined })"
+          class="p-1 text-slate-400 hover:text-indigo-400 hover:bg-slate-800 rounded-lg transition-colors cursor-pointer"
+          title="Reset Title Color to default"
+        >
+          <app-icon name="rotate-ccw" [size]="14"></app-icon>
+        </button>
+      </div>
+    </div>
+    <input
+      type="text"
+      [ngModel]="certSection.title"
+      (ngModelChange)="updateSection({ title: $event })"
+      class="w-full bg-slate-900 border border-slate-700 text-sm font-semibold text-slate-100 rounded-xl p-3 focus:outline-none focus:border-indigo-500"
+    />
+  </div>
+
+  <!-- Subtitle -->
+  <div class="space-y-1.5">
+    <label class="text-xs font-bold text-slate-200">Subtitle</label>
+    <input
+      type="text"
+      [ngModel]="certSection.subtitle"
+      (ngModelChange)="updateSection({ subtitle: $event })"
+      class="w-full bg-slate-900 border border-slate-700 text-sm font-semibold text-slate-100 rounded-xl p-3 focus:outline-none focus:border-indigo-500"
+    />
+  </div>
+
+  <!-- Section Background Fill -->
+  <div class="flex justify-between items-center p-3 rounded-xl border border-slate-800 bg-slate-900/60">
+    <label class="text-xs font-bold text-slate-200">Section Background Color</label>
+    <input
+      type="color"
+      [value]="certSection.bgColor || state.portfolio().colors.background"
+      (input)="updateSection({ bgColor: $any($event.target).value })"
+      class="w-8 h-8 rounded-lg border border-slate-700 bg-transparent cursor-pointer p-0.5"
+    />
+  </div>
+
+  <!-- Certifications Cards List -->
+  <div class="space-y-4 pt-2">
+    <div
+      *ngFor="let item of certSection.certifications; let i = index"
+      class="p-4 rounded-xl border border-slate-800 bg-slate-900/70 space-y-3 shadow-sm"
+    >
+      <div class="flex items-center justify-between">
+        <span class="text-xs font-extrabold text-slate-200">Certificate #{{ i + 1 }}: {{ item.title || 'Untitled' }}</span>
+        <button
+          (click)="deleteCertification(item.id, item.title)"
+          class="p-1.5 text-rose-400 hover:text-rose-300 hover:bg-slate-800 rounded-lg transition-colors cursor-pointer"
+          title="Delete Certificate Card"
+        >
+          <app-icon name="trash-2" [size]="16"></app-icon>
+        </button>
+      </div>
+
+      <div class="space-y-2.5">
+        <input
+          type="text"
+          placeholder="Certification Title (e.g. AWS Solutions Architect)"
+          [ngModel]="item.title"
+          (ngModelChange)="updateItem(item.id, { title: $event })"
+          class="w-full bg-slate-950 border border-slate-700 text-xs font-bold text-slate-100 rounded-lg p-2.5"
+        />
+
+        <div class="grid grid-cols-2 gap-2">
+          <input
+            type="text"
+            placeholder="Issuing Organization (e.g. Amazon Web Services)"
+            [ngModel]="item.issuer"
+            (ngModelChange)="updateItem(item.id, { issuer: $event })"
+            class="bg-slate-950 border border-slate-700 text-xs font-semibold text-slate-100 rounded-lg p-2.5"
+          />
+          <input
+            type="text"
+            placeholder="Issue Date / Year (e.g. 2023)"
+            [ngModel]="item.issueDate"
+            (ngModelChange)="updateItem(item.id, { issueDate: $event })"
+            class="bg-slate-950 border border-slate-700 text-xs font-mono text-slate-200 rounded-lg p-2.5"
+          />
+        </div>
+
+        <div class="grid grid-cols-2 gap-2">
+          <input
+            type="text"
+            placeholder="Credential ID (Optional)"
+            [ngModel]="item.credentialId"
+            (ngModelChange)="updateItem(item.id, { credentialId: $event })"
+            class="bg-slate-950 border border-slate-700 text-xs font-mono text-slate-200 rounded-lg p-2.5"
+          />
+          <input
+            type="text"
+            placeholder="Verification URL (https://...)"
+            [ngModel]="item.credentialUrl"
+            (ngModelChange)="updateItem(item.id, { credentialUrl: $event })"
+            class="bg-slate-950 border border-slate-700 text-xs font-mono text-slate-200 rounded-lg p-2.5"
+          />
+        </div>
+
+        <textarea
+          rows="3"
+          placeholder="Description & Skills Validated..."
+          [ngModel]="item.description"
+          (ngModelChange)="updateItem(item.id, { description: $event })"
+          class="w-full bg-slate-950 border border-slate-700 text-xs text-slate-100 rounded-lg p-2.5 leading-relaxed"
+        ></textarea>
+      </div>
+    </div>
+  </div>
+</div>

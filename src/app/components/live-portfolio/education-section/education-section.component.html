@@ -1,0 +1,59 @@
+<section
+  *ngIf="state.portfolio().education.visible"
+  id="education"
+  (click)="selectEducation($event)"
+  [class.canvas-section-selected]="!state.previewMode() && state.selectedSectionId() === 'education'"
+  data-section-title="Education Section"
+  class="w-full py-20 px-6 cursor-pointer transition-all border-t border-white/5 select-none"
+  [style.backgroundColor]="state.portfolio().education.bgColor || state.portfolio().colors.sectionBg"
+>
+  <div class="max-w-6xl mx-auto space-y-12">
+    <!-- Header -->
+    <div class="text-center space-y-2">
+      <h2
+        class="text-3xl sm:text-4xl font-extrabold tracking-tight"
+        [style.color]="state.portfolio().education.titleColor || state.portfolio().colors.heading"
+      >
+        {{ state.portfolio().education.title }}
+      </h2>
+      <p class="text-xs sm:text-sm max-w-xl mx-auto font-medium" [style.color]="state.portfolio().colors.text">
+        {{ state.portfolio().education.subtitle }}
+      </p>
+    </div>
+
+    <!-- Education Cards (Side-by-Side Icon + Title Layout) -->
+    <div class="flex flex-wrap justify-center gap-6">
+      <div
+        *ngFor="let item of state.portfolio().education.items"
+        class="w-full sm:w-[calc(50%-16px)] max-w-[580px] p-6 rounded-2xl border space-y-4 shadow-md transition-all duration-300 hover:-translate-y-1 flex flex-col justify-between"
+        [style.backgroundColor]="state.portfolio().colors.cardBg"
+        [style.borderColor]="state.portfolio().colors.borderColor"
+      >
+        <div class="space-y-3">
+          <div class="flex items-start gap-3.5">
+            <div class="w-10 h-10 rounded-xl bg-indigo-500/10 flex items-center justify-center text-indigo-400 shrink-0 border border-indigo-500/20 mt-0.5">
+              <app-icon name="graduation-cap" [size]="20"></app-icon>
+            </div>
+
+            <div class="space-y-1">
+              <h3 class="text-base sm:text-lg font-bold leading-snug" [style.color]="state.portfolio().colors.heading">
+                {{ item.degree }}
+              </h3>
+              <h4 class="text-xs font-semibold" [style.color]="state.portfolio().colors.primary">
+                {{ item.college }}
+              </h4>
+            </div>
+          </div>
+
+          <span class="text-xs font-bold px-2.5 py-1 rounded-full bg-white/5 font-mono text-slate-300 inline-block">
+            {{ item.duration }} &bull; {{ item.grade }}
+          </span>
+
+          <p class="text-xs text-slate-300 leading-relaxed">
+            {{ item.description }}
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

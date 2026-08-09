@@ -1,0 +1,168 @@
+import { Component, inject } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
+import { PortfolioStateService } from '../../../core/services/portfolio-state.service';
+import { ProjectItem, ProjectsSection } from '../../../core/models/portfolio.model';
+import { IconComponent } from '../../../shared/components/icon/icon.component';
+import { ImagePickerComponent } from '../../../shared/components/image-picker/image-picker.component';
+
+@Component({
+  selector: 'app-projects-inspector',
+  standalone: true,
+  imports: [CommonModule, FormsModule, IconComponent, ImagePickerComponent],
+  template: `
+    <div class="space-y-5">
+      <div class="flex items-center justify-between pb-3 border-b border-slate-800">
+        <h3 class="text-sm font-bold text-indigo-400 uppercase tracking-wider">Projects Section & Cards</h3>
+        <button
+          (click)="addProject()"
+          class="flex items-center gap-1.5 text-xs font-bold text-white bg-indigo-600 hover:bg-indigo-500 px-3 py-1.5 rounded-lg transition-colors cursor-pointer shadow-sm"
+        >
+          <app-icon name="plus" [size]="14"></app-icon> Add Project Card
+        </button>
+      </div>
+
+      <!-- Title & Title Color -->
+      <div class="space-y-1.5">
+        <div class="flex justify-between items-center">
+          <label class="text-xs font-bold text-slate-200">Section Title</label>
+          <div class="flex items-center gap-1.5">
+            <span class="text-xs text-slate-400">Title Color</span>
+            <input
+              type="color"
+              [value]="projectsSection.titleColor || state.portfolio().colors.heading"
+              (input)="updateSection({ titleColor: $any($event.target).value })"
+              class="w-7 h-7 rounded-lg border border-slate-700 bg-transparent cursor-pointer p-0.5"
+            />
+            <button
+              *ngIf="projectsSection.titleColor"
+              (click)="updateSection({ titleColor: undefined })"
+              class="p-1 text-slate-400 hover:text-indigo-400 hover:bg-slate-800 rounded-lg transition-colors cursor-pointer"
+              title="Reset Title Color to default"
+            >
+              <app-icon name="rotate-ccw" [size]="14"></app-icon>
+            </button>
+          </div>
+        </div>
+        <input
+          type="text"
+          [ngModel]="projectsSection.title"
+          (ngModelChange)="updateSection({ title: $event })"
+          class="w-full bg-slate-900 border border-slate-700 text-sm font-semibold text-slate-100 rounded-xl p-3 focus:outline-none focus:border-indigo-500"
+        />
+      </div>
+
+      <!-- Subtitle -->
+      <div class="space-y-1.5">
+        <label class="text-xs font-bold text-slate-200">Subtitle</label>
+        <input
+          type="text"
+          [ngModel]="projectsSection.subtitle"
+          (ngModelChange)="updateSection({ subtitle: $event })"
+          class="w-full bg-slate-900 border border-slate-700 text-sm font-semibold text-slate-100 rounded-xl p-3 focus:outline-none focus:border-indigo-500"
+        />
+      </div>
+
+      <!-- Project Cards List -->
+      <div class="space-y-4 pt-2">
+        <div
+          *ngFor="let p of projectsSection.projects; let i = index"
+          class="p-4 rounded-xl border border-slate-800 bg-slate-900/70 space-y-3 shadow-sm"
+        >
+          <div class="flex items-center justify-between">
+            <span class="text-xs font-extrabold text-slate-200">Project #{{ i + 1 }}: {{ p.title || 'Untitled' }}</span>
+            <button
+              (click)="deleteProject(p.id, p.title)"
+              class="flex items-center gap-1 text-xs font-bold text-rose-400 hover:text-rose-300 hover:bg-slate-800 px-2.5 py-1 rounded transition-colors cursor-pointer"
+              title="Delete Project Card"
+            >
+              <app-icon name="trash-2" [size]="14"></app-icon> Delete Project
+            </button>
+          </div>
+
+          <div class="space-y-2.5">
+            <input
+              type="text"
+              placeholder="Project Title"
+              [ngModel]="p.title"
+              (ngModelChange)="updateProjectItem(p.id, { title: $event })"
+              class="w-full bg-slate-950 border border-slate-700 text-xs font-bold text-slate-100 rounded-lg p-2.5"
+            />
+
+            <textarea
+              rows="3"
+              placeholder="Description"
+              [ngModel]="p.description"
+              (ngModelChange)="updateProjectItem(p.id, { description: $event })"
+              class="w-full bg-slate-950 border border-slate-700 text-xs text-slate-200 rounded-lg p-2.5"
+            ></textarea>
+
+            <!-- Cover Image Picker (Upload File OR Image Link) -->
+            <app-image-picker
+              label="Cover Image"
+              [imageUrl]="p.image"
+              (imageUrlChange)="updateProjectItem(p.id, { image: $event })"
+            ></app-image-picker>
+
+            <div class="grid grid-cols-2 gap-2 pt-1">
+              <input
+                type="text"
+                placeholder="Live Demo URL"
+                [ngModel]="p.liveDemoUrl"
+                (ngModelChange)="updateProjectItem(p.id, { liveDemoUrl: $event })"
+                class="bg-slate-950 border border-slate-700 text-xs font-mono text-slate-200 rounded-lg p-2"
+              />
+              <input
+                type="text"
+                placeholder="GitHub Repo URL"
+                [ngModel]="p.githubUrl"
+                (ngModelChange)="updateProjectItem(p.id, { githubUrl: $event })"
+                class="bg-slate-950 border border-slate-700 text-xs font-mono text-slate-200 rounded-lg p-2"
+              />
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  `,
+})
+export class ProjectsInspectorComponent {
+  readonly state = inject(PortfolioStateService);
+
+  get projectsSection(): ProjectsSection {
+    return this.state.portfolio().projects;
+  }
+
+  updateSection(partial: Partial<ProjectsSection>) {
+    this.state.updateProjects(partial);
+  }
+
+  addProject() {
+    const newProject: ProjectItem = {
+      id: Date.now().toString(),
+      title: 'New Portfolio Project',
+      description: 'A brief description of this new portfolio showcase project.',
+      image: 'https://images.unsplash.com/photo-1555066931-4365d14bab8c?auto=format&fit=crop&w=800&q=80',
+      githubUrl: 'https://github.com',
+      liveDemoUrl: 'https://example.com',
+      tags: ['Angular', 'TypeScript', 'TailwindCSS'],
+      featured: true,
+    };
+    this.updateSection({
+      projects: [...this.projectsSection.projects, newProject],
+    });
+  }
+
+  deleteProject(id: string, title: string) {
+    if (confirm(`Are you sure you want to delete the project card '${title || 'Untitled'}'?`)) {
+      this.updateSection({
+        projects: this.projectsSection.projects.filter((p) => p.id !== id),
+      });
+    }
+  }
+
+  updateProjectItem(id: string, partial: Partial<ProjectItem>) {
+    const updated = this.projectsSection.projects.map((p) => (p.id === id ? { ...p, ...partial } : p));
+    this.updateSection({ projects: updated });
+  }
+}

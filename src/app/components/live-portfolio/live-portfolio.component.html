@@ -1,0 +1,23 @@
+<div class="w-full min-h-full flex flex-col font-sans transition-colors duration-300 relative">
+  <!-- Live Sticky Navbar Section -->
+  <app-navbar-section></app-navbar-section>
+
+  <!-- Re-orderable Canvas Sections Render Loop -->
+  <ng-container *ngFor="let sectionId of state.portfolio().sectionOrder">
+    <ng-container [ngSwitch]="sectionId">
+      <app-hero-section *ngSwitchCase="'hero'"></app-hero-section>
+      <app-about-section *ngSwitchCase="'about'"></app-about-section>
+      <app-skills-section *ngSwitchCase="'skills'"></app-skills-section>
+      <app-experience-section *ngSwitchCase="'experience'"></app-experience-section>
+      <app-projects-section *ngSwitchCase="'projects'"></app-projects-section>
+      <app-education-section *ngSwitchCase="'education'"></app-education-section>
+      <app-certifications-section *ngSwitchCase="'certifications'"></app-certifications-section>
+      <app-achievements-section *ngSwitchCase="'achievements'"></app-achievements-section>
+      <app-testimonials-section *ngSwitchCase="'testimonials'"></app-testimonials-section>
+      <app-contact-section *ngSwitchCase="'contact'"></app-contact-section>
+    </ng-container>
+  </ng-container>
+
+  <!-- Live Footer Section -->
+  <app-footer-section></app-footer-section>
+</div>

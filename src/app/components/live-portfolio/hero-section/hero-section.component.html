@@ -1,0 +1,113 @@
+<section
+  *ngIf="state.portfolio().hero.visible"
+  id="hero"
+  (click)="selectHero($event)"
+  [class.canvas-section-selected]="!state.previewMode() && state.selectedSectionId() === 'hero'"
+  data-section-title="Hero Section"
+  class="w-full relative py-24 sm:py-32 px-6 flex flex-col justify-center cursor-pointer transition-all overflow-hidden border-b border-white/5 select-none"
+  [style.backgroundColor]="state.portfolio().colors.background"
+>
+  <div class="max-w-6xl mx-auto w-full grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+    <!-- Left Text & Info -->
+    <div
+      class="space-y-6"
+      [class.lg:col-span-7]="state.portfolio().hero.profileImage"
+      [class.lg:col-span-12]="!state.portfolio().hero.profileImage"
+      [class.text-center]="state.portfolio().hero.alignment === 'center'"
+      [class.text-right]="state.portfolio().hero.alignment === 'right'"
+    >
+      <div class="space-y-3">
+        <h1
+          class="text-4xl sm:text-6xl font-black tracking-tight leading-tight"
+          [style.color]="state.portfolio().hero.nameColor || state.portfolio().colors.heading"
+        >
+          {{ state.portfolio().hero.name }}
+        </h1>
+
+        <h2
+          class="text-xl sm:text-2xl font-bold tracking-wide"
+          [style.color]="state.portfolio().hero.roleColor || state.portfolio().colors.primary"
+        >
+          {{ state.portfolio().hero.role }}
+        </h2>
+      </div>
+
+      <p
+        class="text-base sm:text-lg max-w-2xl leading-relaxed font-medium"
+        [style.color]="state.portfolio().hero.descColor || state.portfolio().colors.text"
+        [class.mx-auto]="state.portfolio().hero.alignment === 'center'"
+        [class.ml-auto]="state.portfolio().hero.alignment === 'right'"
+      >
+        {{ state.portfolio().hero.description }}
+      </p>
+
+      <!-- CTA Action Buttons (Including Resume Download Button) -->
+      <div
+        class="flex flex-wrap items-center gap-4 pt-4"
+        [class.justify-center]="state.portfolio().hero.alignment === 'center'"
+        [class.justify-end]="state.portfolio().hero.alignment === 'right'"
+      >
+        <button
+          *ngIf="state.portfolio().hero.ctaPrimaryLabel"
+          (click)="downloadResume($event)"
+          class="inline-flex items-center gap-2 px-6 py-3.5 rounded-xl font-extrabold text-sm text-white shadow-xl transition-all hover:scale-105 active:scale-95 cursor-pointer border-0"
+          [style.backgroundColor]="state.portfolio().colors.button"
+        >
+          <app-icon name="file-text" [size]="18"></app-icon>
+          <span>{{ state.portfolio().hero.ctaPrimaryLabel }}</span>
+        </button>
+
+        <a
+          *ngIf="state.portfolio().hero.ctaSecondaryLabel"
+          [href]="state.portfolio().hero.ctaSecondaryUrl"
+          (click)="onCtaClick($event, state.portfolio().hero.ctaSecondaryUrl)"
+          class="px-6 py-3.5 rounded-xl font-bold text-sm border transition-all hover:scale-105 active:scale-95 cursor-pointer"
+          [style.borderColor]="state.portfolio().colors.borderColor"
+          [style.color]="state.portfolio().colors.heading"
+        >
+          {{ state.portfolio().hero.ctaSecondaryLabel }}
+        </a>
+      </div>
+
+      <!-- Social Icons -->
+      <div
+        *ngIf="state.portfolio().hero.socialLinks?.length"
+        class="flex items-center gap-3 pt-6 border-t border-white/5"
+        [class.justify-center]="state.portfolio().hero.alignment === 'center'"
+        [class.justify-end]="state.portfolio().hero.alignment === 'right'"
+      >
+        <a
+          *ngFor="let s of state.portfolio().hero.socialLinks"
+          [href]="s.url"
+          [target]="state.previewMode() ? '_blank' : '_self'"
+          (click)="onSocialClick($event)"
+          class="w-10 h-10 rounded-xl border flex items-center justify-center transition-all hover:scale-110"
+          [style.borderColor]="state.portfolio().colors.borderColor"
+          [style.backgroundColor]="state.portfolio().colors.cardBg"
+          [title]="s.platform"
+        >
+          <app-icon [name]="s.icon" [size]="18" [style.color]="state.portfolio().colors.primary"></app-icon>
+        </a>
+      </div>
+    </div>
+
+    <!-- Right Profile Image -->
+    <div
+      *ngIf="state.portfolio().hero.profileImage"
+      class="lg:col-span-5 flex justify-center"
+    >
+      <div class="relative group">
+        <img
+          [src]="state.portfolio().hero.profileImage"
+          alt="Profile"
+          class="w-64 h-64 sm:w-80 sm:h-80 object-cover shadow-2xl transition-transform duration-500 group-hover:scale-105"
+          [class.rounded-full]="state.portfolio().hero.imageShape === 'circle'"
+          [class.rounded-2xl]="state.portfolio().hero.imageShape === 'rounded'"
+          [class.rounded-none]="state.portfolio().hero.imageShape === 'square'"
+          [class.border-4]="state.portfolio().hero.imageBorder"
+          [style.borderColor]="state.portfolio().colors.primary"
+        />
+      </div>
+    </div>
+  </div>
+</section>
