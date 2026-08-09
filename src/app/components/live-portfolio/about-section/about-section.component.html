@@ -8,9 +8,10 @@
   [style.backgroundColor]="state.portfolio().about.bgColor || state.portfolio().colors.sectionBg"
 >
   <div class="max-w-6xl mx-auto space-y-10">
-    <!-- Section Header -->
+    <!-- Header -->
     <div class="text-center space-y-2">
       <div class="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-indigo-500/10 border border-indigo-500/20 text-xs font-extrabold uppercase tracking-widest text-indigo-400">
+        <app-icon name="user" [size]="14"></app-icon>
         <span>WHO I AM</span>
       </div>
       <h2
@@ -27,13 +28,13 @@
       </p>
     </div>
 
-    <!-- Main Content Dashboard Grid -->
+    <!-- Main Content Layout -->
     <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-stretch">
-      <!-- Left Dashboard Card: Biography & Highlights -->
+      <!-- Biography Card -->
       <div
         class="rounded-2xl border p-6 sm:p-8 flex flex-col justify-start space-y-6 shadow-xl backdrop-blur-sm h-full"
-        [class.lg:col-span-7]="customDetails.length > 0 || state.portfolio().about.image"
-        [class.lg:col-span-12]="customDetails.length === 0 && !state.portfolio().about.image"
+        [class.lg:col-span-7]="hasCustomDetails || state.portfolio().about.image"
+        [class.lg:col-span-12]="!hasCustomDetails && !state.portfolio().about.image"
         [style.backgroundColor]="state.portfolio().colors.cardBg"
         [style.borderColor]="state.portfolio().colors.borderColor"
       >
@@ -45,13 +46,12 @@
             </h3>
           </div>
 
-          <!-- Cohesive Bio Text -->
           <p class="text-sm sm:text-base leading-relaxed font-normal" [style.color]="state.portfolio().colors.text">
             {{ state.portfolio().about.description }}
           </p>
         </div>
 
-        <!-- Optional Image -->
+        <!-- Optional Section Image -->
         <div *ngIf="state.portfolio().about.image" class="pt-2">
           <img
             [src]="state.portfolio().about.image"
@@ -60,20 +60,26 @@
           />
         </div>
 
-        <!-- Highlights Bullet List -->
+        <!-- Key Highlights -->
         <div *ngIf="state.portfolio().about.highlights?.length" class="space-y-3 pt-5 border-t border-white/5 mt-2">
-          <span class="text-[11px] font-extrabold uppercase tracking-widest text-indigo-400">KEY HIGHLIGHTS</span>
+          <span class="text-[11px] font-extrabold uppercase tracking-widest text-indigo-400">
+            KEY HIGHLIGHTS
+          </span>
           <div class="space-y-2.5">
-            <div *ngFor="let h of state.portfolio().about.highlights" class="flex items-start gap-2.5 text-xs sm:text-sm font-semibold" [style.color]="state.portfolio().colors.heading">
-              <app-icon name="check-circle-2" [size]="16" class="text-indigo-400 shrink-0 mt-0.5"></app-icon>
-              <span>{{ h }}</span>
+            <div
+              *ngFor="let item of state.portfolio().about.highlights"
+              class="flex items-start gap-2.5 text-xs sm:text-sm font-semibold"
+              [style.color]="state.portfolio().colors.heading"
+            >
+              <app-icon name="check-circle" [size]="16" class="text-indigo-400 shrink-0 mt-0.5"></app-icon>
+              <span>{{ item }}</span>
             </div>
           </div>
         </div>
       </div>
 
-      <!-- Right Dashboard Card: Personal Information & Custom Details Grid -->
-      <div *ngIf="customDetails.length > 0" class="lg:col-span-5 flex flex-col">
+      <!-- Personal Details Card -->
+      <div *ngIf="hasCustomDetails" class="lg:col-span-5 flex flex-col">
         <div
           class="rounded-2xl border p-6 sm:p-8 space-y-6 shadow-xl h-full flex flex-col justify-start backdrop-blur-sm"
           [style.backgroundColor]="state.portfolio().colors.cardBg"
@@ -88,78 +94,98 @@
             </div>
           </div>
 
-          <!-- Dynamic Personal Facts Grid with Editable Labels -->
+          <!-- Dynamic Personal Details Items Grid (Clean Light & Dark Theme Support) -->
           <div class="grid grid-cols-1 sm:grid-cols-2 gap-3.5 text-xs">
             <div
-              *ngFor="let item of customDetails; trackBy: trackById"
-              class="p-3 rounded-xl bg-slate-950/40 border border-white/5 space-y-0.5"
-              [class.sm:col-span-2]="isLongValue(item.value)"
+              *ngFor="let item of state.portfolio().about.customDetails"
+              class="p-3 rounded-xl bg-slate-500/10 border border-slate-500/20 space-y-0.5"
+              [class.sm:col-span-2]="item.value.length > 25"
             >
-              <div class="text-[10px] font-bold text-slate-400 uppercase tracking-wide">{{ item.label }}</div>
+              <div class="text-[10px] font-bold text-slate-400 uppercase tracking-wide">
+                {{ item.label }}
+              </div>
 
-              <ng-container *ngIf="isEmail(item.value); else statusOrText">
-                <a [href]="'mailto:' + item.value" class="text-xs font-bold font-mono hover:underline truncate block" [style.color]="state.portfolio().colors.primary">
-                  {{ item.value }}
-                </a>
-              </ng-container>
+              <!-- Email link -->
+              <a
+                *ngIf="item.value.includes('@')"
+                [href]="'mailto:' + item.value"
+                class="text-xs font-bold font-mono hover:underline truncate block"
+                [style.color]="state.portfolio().colors.primary"
+              >
+                {{ item.value }}
+              </a>
 
-              <ng-template #statusOrText>
-                <div *ngIf="isStatus(item.label)" class="inline-flex items-center gap-1.5 text-xs font-extrabold text-emerald-400 mt-0.5">
-                  <span class="w-2 h-2 rounded-full bg-emerald-400 shrink-0"></span>
-                  <span>{{ item.value }}</span>
-                </div>
-                <div *ngIf="!isStatus(item.label)" class="text-xs font-extrabold truncate" [style.color]="state.portfolio().colors.heading">
-                  {{ item.value }}
-                </div>
-              </ng-template>
+              <!-- Freelance / Status indicator with Green Dot -->
+              <div
+                *ngIf="!item.value.includes('@') && (item.label.toLowerCase().includes('freelance') || item.label.toLowerCase().includes('status'))"
+                class="inline-flex items-center gap-1.5 text-xs font-extrabold text-emerald-400 mt-0.5"
+              >
+                <span class="w-2 h-2 rounded-full bg-emerald-400 shrink-0"></span>
+                <span>{{ item.value }}</span>
+              </div>
+
+              <!-- Standard Text Value -->
+              <div
+                *ngIf="!item.value.includes('@') && !item.label.toLowerCase().includes('freelance') && !item.label.toLowerCase().includes('status')"
+                class="text-xs font-extrabold truncate"
+                [style.color]="state.portfolio().colors.heading"
+              >
+                {{ item.value }}
+              </div>
             </div>
           </div>
         </div>
       </div>
     </div>
 
-    <!-- Metrics / Counter Badges Row -->
+    <!-- Metric Counters Row -->
     <div
-      *ngIf="hasAnyMetrics"
+      *ngIf="activeMetricsCount > 0"
       class="grid gap-6 pt-4"
-      [class.grid-cols-3]="activeMetricsCount === 3"
-      [class.grid-cols-2]="activeMetricsCount === 2"
       [class.grid-cols-1]="activeMetricsCount === 1"
+      [class.grid-cols-2]="activeMetricsCount === 2"
+      [class.grid-cols-3]="activeMetricsCount >= 3"
     >
       <div
         *ngIf="state.portfolio().about.experienceYears"
-        class="p-5 rounded-2xl border text-center space-y-1 shadow-lg transition-transform hover:-translate-y-1"
+        class="p-5 rounded-2xl border text-center space-y-1 shadow-lg"
         [style.backgroundColor]="state.portfolio().colors.cardBg"
         [style.borderColor]="state.portfolio().colors.borderColor"
       >
         <div class="text-2xl sm:text-3xl font-extrabold" [style.color]="state.portfolio().colors.primary">
           {{ state.portfolio().about.experienceYears }}
         </div>
-        <div class="text-xs font-bold text-slate-400 uppercase tracking-wide">Years Experience</div>
+        <div class="text-xs font-bold text-slate-400 uppercase tracking-wide">
+          Years Experience
+        </div>
       </div>
 
       <div
         *ngIf="state.portfolio().about.projectsCount"
-        class="p-5 rounded-2xl border text-center space-y-1 shadow-lg transition-transform hover:-translate-y-1"
+        class="p-5 rounded-2xl border text-center space-y-1 shadow-lg"
         [style.backgroundColor]="state.portfolio().colors.cardBg"
         [style.borderColor]="state.portfolio().colors.borderColor"
       >
         <div class="text-2xl sm:text-3xl font-extrabold" [style.color]="state.portfolio().colors.primary">
           {{ state.portfolio().about.projectsCount }}
         </div>
-        <div class="text-xs font-bold text-slate-400 uppercase tracking-wide">Projects Completed</div>
+        <div class="text-xs font-bold text-slate-400 uppercase tracking-wide">
+          Projects Completed
+        </div>
       </div>
 
       <div
         *ngIf="state.portfolio().about.clientsCount"
-        class="p-5 rounded-2xl border text-center space-y-1 shadow-lg transition-transform hover:-translate-y-1"
+        class="p-5 rounded-2xl border text-center space-y-1 shadow-lg"
         [style.backgroundColor]="state.portfolio().colors.cardBg"
         [style.borderColor]="state.portfolio().colors.borderColor"
       >
         <div class="text-2xl sm:text-3xl font-extrabold" [style.color]="state.portfolio().colors.primary">
           {{ state.portfolio().about.clientsCount }}
         </div>
-        <div class="text-xs font-bold text-slate-400 uppercase tracking-wide">Happy Clients</div>
+        <div class="text-xs font-bold text-slate-400 uppercase tracking-wide">
+          Happy Clients
+        </div>
       </div>
     </div>
   </div>

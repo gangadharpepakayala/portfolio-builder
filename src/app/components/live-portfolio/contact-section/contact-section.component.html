@@ -1,0 +1,141 @@
+<section
+  *ngIf="state.portfolio().contact.visible"
+  id="contact"
+  (click)="selectContact($event)"
+  [class.canvas-section-selected]="!state.previewMode() && state.selectedSectionId() === 'contact'"
+  data-section-title="Contact Section"
+  class="w-full py-20 px-6 cursor-pointer transition-all border-t border-white/5 select-none"
+  [style.backgroundColor]="state.portfolio().contact.bgColor || state.portfolio().colors.background"
+>
+  <div class="max-w-6xl mx-auto space-y-12">
+    <!-- Header -->
+    <div class="text-center space-y-2">
+      <h2
+        class="text-3xl sm:text-4xl font-extrabold tracking-tight"
+        [style.color]="state.portfolio().contact.titleColor || state.portfolio().colors.heading"
+      >
+        {{ state.portfolio().contact.title }}
+      </h2>
+      <p class="text-sm sm:text-base max-w-xl mx-auto" [style.color]="state.portfolio().colors.text">
+        {{ state.portfolio().contact.subtitle }}
+      </p>
+    </div>
+
+    <!-- Contact Content Layout -->
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+      <!-- Contact Info Card -->
+      <div
+        class="lg:col-span-5 p-6 sm:p-8 rounded-2xl border space-y-6 shadow-xl"
+        [style.backgroundColor]="state.portfolio().colors.cardBg"
+        [style.borderColor]="state.portfolio().colors.borderColor"
+      >
+        <div class="space-y-4">
+          <div *ngIf="state.portfolio().contact.email" class="flex items-center gap-3.5 text-sm">
+            <div class="w-10 h-10 rounded-xl bg-indigo-500/10 flex items-center justify-center text-indigo-400 shrink-0 border border-indigo-500/20">
+              <app-icon name="mail" [size]="18"></app-icon>
+            </div>
+            <div>
+              <div class="text-[11px] font-bold text-slate-400 uppercase tracking-wide">Email Address</div>
+              <a [href]="'mailto:' + state.portfolio().contact.email" class="font-semibold hover:underline" [style.color]="state.portfolio().colors.heading">
+                {{ state.portfolio().contact.email }}
+              </a>
+            </div>
+          </div>
+
+          <div *ngIf="state.portfolio().contact.phone" class="flex items-center gap-3.5 text-sm">
+            <div class="w-10 h-10 rounded-xl bg-indigo-500/10 flex items-center justify-center text-indigo-400 shrink-0 border border-indigo-500/20">
+              <app-icon name="globe" [size]="18"></app-icon>
+            </div>
+            <div>
+              <div class="text-[11px] font-bold text-slate-400 uppercase tracking-wide">Phone Number</div>
+              <div class="font-semibold" [style.color]="state.portfolio().colors.heading">
+                {{ state.portfolio().contact.phone }}
+              </div>
+            </div>
+          </div>
+
+          <div *ngIf="state.portfolio().contact.address" class="flex items-center gap-3.5 text-sm">
+            <div class="w-10 h-10 rounded-xl bg-indigo-500/10 flex items-center justify-center text-indigo-400 shrink-0 border border-indigo-500/20">
+              <app-icon name="user" [size]="18"></app-icon>
+            </div>
+            <div>
+              <div class="text-[11px] font-bold text-slate-400 uppercase tracking-wide">Location Address</div>
+              <div class="font-semibold" [style.color]="state.portfolio().colors.heading">
+                {{ state.portfolio().contact.address }}
+              </div>
+            </div>
+          </div>
+
+          <div *ngIf="state.portfolio().contact.website" class="flex items-center gap-3.5 text-sm">
+            <div class="w-10 h-10 rounded-xl bg-indigo-500/10 flex items-center justify-center text-indigo-400 shrink-0 border border-indigo-500/20">
+              <app-icon name="external-link" [size]="18"></app-icon>
+            </div>
+            <div>
+              <div class="text-[11px] font-bold text-slate-400 uppercase tracking-wide">Personal Website</div>
+              <a [href]="state.portfolio().contact.website" target="_blank" class="font-semibold hover:underline" [style.color]="state.portfolio().colors.heading">
+                {{ state.portfolio().contact.website }}
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Contact Form (Light Theme Crisp Inputs) -->
+      <form
+        (submit)="onSubmit($event)"
+        class="lg:col-span-7 space-y-4 p-6 sm:p-8 rounded-2xl border shadow-xl"
+        [style.backgroundColor]="state.portfolio().colors.cardBg"
+        [style.borderColor]="state.portfolio().colors.borderColor"
+      >
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <div class="space-y-1.5">
+            <label class="text-xs font-bold" [style.color]="state.portfolio().colors.text">Your Name</label>
+            <input
+              type="text"
+              placeholder="John Doe"
+              required
+              class="w-full border text-sm font-semibold rounded-xl p-3 focus:outline-none focus:ring-2 focus:ring-indigo-500 transition-all placeholder:text-slate-400"
+              [style.backgroundColor]="isLightTheme ? '#f1f5f9' : 'rgba(15, 23, 42, 0.7)'"
+              [style.borderColor]="isLightTheme ? '#cbd5e1' : state.portfolio().colors.borderColor"
+              [style.color]="isLightTheme ? '#0f172a' : state.portfolio().colors.heading"
+            />
+          </div>
+
+          <div class="space-y-1.5">
+            <label class="text-xs font-bold" [style.color]="state.portfolio().colors.text">Email Address</label>
+            <input
+              type="email"
+              placeholder="john@example.com"
+              required
+              class="w-full border text-sm font-semibold rounded-xl p-3 focus:outline-none focus:ring-2 focus:ring-indigo-500 transition-all placeholder:text-slate-400"
+              [style.backgroundColor]="isLightTheme ? '#f1f5f9' : 'rgba(15, 23, 42, 0.7)'"
+              [style.borderColor]="isLightTheme ? '#cbd5e1' : state.portfolio().colors.borderColor"
+              [style.color]="isLightTheme ? '#0f172a' : state.portfolio().colors.heading"
+            />
+          </div>
+        </div>
+
+        <div class="space-y-1.5">
+          <label class="text-xs font-bold" [style.color]="state.portfolio().colors.text">Message</label>
+          <textarea
+            placeholder="Hello, I'd like to discuss a new project..."
+            rows="4"
+            required
+            class="w-full border text-sm font-semibold rounded-xl p-3 focus:outline-none focus:ring-2 focus:ring-indigo-500 transition-all placeholder:text-slate-400"
+            [style.backgroundColor]="isLightTheme ? '#f1f5f9' : 'rgba(15, 23, 42, 0.7)'"
+            [style.borderColor]="isLightTheme ? '#cbd5e1' : state.portfolio().colors.borderColor"
+            [style.color]="isLightTheme ? '#0f172a' : state.portfolio().colors.heading"
+          ></textarea>
+        </div>
+
+        <button
+          type="submit"
+          class="w-full sm:w-auto px-8 py-3.5 rounded-xl font-bold text-sm text-white shadow-lg transition-all hover:scale-105 active:scale-95 cursor-pointer"
+          [style.backgroundColor]="state.portfolio().colors.button"
+        >
+          Send Message
+        </button>
+      </form>
+    </div>
+  </div>
+</section>

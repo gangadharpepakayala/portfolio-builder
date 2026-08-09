@@ -7,104 +7,56 @@ import { IconComponent } from '../../../shared/components/icon/icon.component';
   selector: 'app-contact-section',
   standalone: true,
   imports: [CommonModule, IconComponent],
-  template: `
-    <section
-      *ngIf="state.portfolio().contact.visible"
-      id="contact"
-      (click)="selectContact($event)"
-      [class.canvas-section-selected]="state.selectedSectionId() === 'contact'"
-      data-section-title="Contact Section"
-      class="w-full py-20 px-6 cursor-pointer transition-all border-t border-white/5"
-      [style.backgroundColor]="state.portfolio().colors.sectionBg"
-    >
-      <div class="max-w-6xl mx-auto space-y-12">
-        <div class="text-center space-y-2">
-          <h2 class="text-3xl sm:text-4xl font-extrabold" [style.color]="state.portfolio().colors.heading">
-            {{ state.portfolio().contact.title }}
-          </h2>
-          <p class="text-sm sm:text-base max-w-xl mx-auto" [style.color]="state.portfolio().colors.text">
-            {{ state.portfolio().contact.subtitle }}
-          </p>
-        </div>
-
-        <div class="grid grid-cols-1 lg:grid-cols-12 gap-12">
-          <div class="lg:col-span-5 space-y-6">
-            <div class="p-6 rounded-2xl border space-y-6" [style.backgroundColor]="state.portfolio().colors.cardBg" [style.borderColor]="state.portfolio().colors.borderColor">
-              <div class="flex items-center gap-4">
-                <div class="w-12 h-12 rounded-xl flex items-center justify-center bg-indigo-500/10 text-indigo-400">
-                  <app-icon name="mail" [size]="20"></app-icon>
-                </div>
-                <div>
-                  <div class="text-xs text-slate-400 font-semibold">Email Address</div>
-                  <a [href]="'mailto:' + state.portfolio().contact.email" class="text-sm font-bold" [style.color]="state.portfolio().colors.heading">
-                    {{ state.portfolio().contact.email }}
-                  </a>
-                </div>
-              </div>
-
-              <div class="flex items-center gap-4">
-                <div class="w-12 h-12 rounded-xl flex items-center justify-center bg-indigo-500/10 text-indigo-400">
-                  <app-icon name="globe" [size]="20"></app-icon>
-                </div>
-                <div>
-                  <div class="text-xs text-slate-400 font-semibold">Phone / Mobile</div>
-                  <div class="text-sm font-bold" [style.color]="state.portfolio().colors.heading">
-                    {{ state.portfolio().contact.phone }}
-                  </div>
-                </div>
-              </div>
-
-              <div class="flex items-center gap-4">
-                <div class="w-12 h-12 rounded-xl flex items-center justify-center bg-indigo-500/10 text-indigo-400">
-                  <app-icon name="globe" [size]="20"></app-icon>
-                </div>
-                <div>
-                  <div class="text-xs text-slate-400 font-semibold">Office Location</div>
-                  <div class="text-sm font-bold" [style.color]="state.portfolio().colors.heading">
-                    {{ state.portfolio().contact.address }}
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <div class="lg:col-span-7">
-            <form (submit)="$event.preventDefault()" class="p-8 rounded-2xl border space-y-4" [style.backgroundColor]="state.portfolio().colors.cardBg" [style.borderColor]="state.portfolio().colors.borderColor">
-              <div class="grid grid-cols-2 gap-4">
-                <div class="space-y-1">
-                  <label class="text-xs font-semibold text-slate-400">Your Name</label>
-                  <input type="text" placeholder="John Doe" class="w-full bg-slate-900 border border-slate-800 rounded-xl p-3 text-xs text-slate-100 focus:outline-none" />
-                </div>
-                <div class="space-y-1">
-                  <label class="text-xs font-semibold text-slate-400">Email Address</label>
-                  <input type="email" placeholder="john@example.com" class="w-full bg-slate-900 border border-slate-800 rounded-xl p-3 text-xs text-slate-100 focus:outline-none" />
-                </div>
-              </div>
-
-              <div class="space-y-1">
-                <label class="text-xs font-semibold text-slate-400">Message</label>
-                <textarea rows="4" placeholder="Hello, I'd like to discuss a new project..." class="w-full bg-slate-900 border border-slate-800 rounded-xl p-3 text-xs text-slate-100 focus:outline-none"></textarea>
-              </div>
-
-              <button
-                type="submit"
-                class="w-full py-3.5 rounded-xl font-bold text-sm text-white transition-all shadow-lg active:scale-98"
-                [style.backgroundColor]="state.portfolio().colors.button"
-              >
-                Send Message
-              </button>
-            </form>
-          </div>
-        </div>
-      </div>
-    </section>
-  `,
+  templateUrl: './contact-section.component.html',
+  styleUrls: ['./contact-section.component.scss'],
 })
 export class ContactSectionComponent {
   readonly state = inject(PortfolioStateService);
 
+  get isLightTheme(): boolean {
+    const p = this.state.portfolio();
+    const preset = (p.themePreset || '').toLowerCase();
+    if (preset === 'light' || preset === 'minimal' || preset === 'corporate') {
+      return true;
+    }
+
+    const bg = (p.colors.background || '').toLowerCase();
+    const cardBg = (p.colors.cardBg || '').toLowerCase();
+
+    const isHexLight = (hex: string): boolean => {
+      if (!hex || !hex.startsWith('#')) return false;
+      const clean = hex.replace('#', '');
+      if (clean.length === 3) {
+        const r = parseInt(clean[0] + clean[0], 16);
+        const g = parseInt(clean[1] + clean[1], 16);
+        const b = parseInt(clean[2] + clean[2], 16);
+        return (r * 299 + g * 587 + b * 114) / 1000 > 140;
+      }
+      if (clean.length === 6) {
+        const r = parseInt(clean.substring(0, 2), 16);
+        const g = parseInt(clean.substring(2, 4), 16);
+        const b = parseInt(clean.substring(4, 6), 16);
+        return (r * 299 + g * 587 + b * 114) / 1000 > 140;
+      }
+      return false;
+    };
+
+    return isHexLight(cardBg) || isHexLight(bg) || cardBg === 'white' || bg === 'white';
+  }
+
   selectContact(event: Event) {
-    event.stopPropagation();
-    this.state.selectSection('contact');
+    if (!this.state.previewMode()) {
+      event.stopPropagation();
+      this.state.selectSection('contact');
+    }
+  }
+
+  onSubmit(event: Event) {
+    event.preventDefault();
+    if (!this.state.previewMode()) {
+      this.state.selectSection('contact');
+    } else {
+      alert('Thank you for reaching out! Your message has been sent successfully.');
+    }
   }
 }

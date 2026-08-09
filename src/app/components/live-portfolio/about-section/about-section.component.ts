@@ -18,6 +18,10 @@ export class AboutSectionComponent {
     return this.state.portfolio().about.customDetails || [];
   }
 
+  get hasCustomDetails(): boolean {
+    return this.customDetails.length > 0;
+  }
+
   trackById(_: number, item: PersonalDetailItem): string {
     return item.id;
   }

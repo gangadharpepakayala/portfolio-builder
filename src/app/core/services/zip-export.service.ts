@@ -239,7 +239,7 @@ export class ZipExportService {
                 </div>
                 <div class="grid grid-cols-1 sm:grid-cols-2 gap-3.5 text-xs">
                   ${customDetails.map((item) => `
-                    <div class="p-3 rounded-xl bg-slate-950/40 border border-white/5 space-y-0.5 ${item.value.length > 25 ? 'sm:col-span-2' : ''}">
+                    <div class="p-3 rounded-xl bg-slate-500/10 border border-slate-500/20 space-y-0.5 ${item.value.length > 25 ? 'sm:col-span-2' : ''}">
                       <div class="text-[10px] font-bold text-slate-400 uppercase tracking-wide">${item.label}</div>
                       ${item.value.includes('@') ? `<a href="mailto:${item.value}" class="text-xs font-bold font-mono hover:underline truncate block" style="color: ${colors.primary};">${item.value}</a>` : item.label.toLowerCase().includes('freelance') || item.label.toLowerCase().includes('status') ? `<div class="inline-flex items-center gap-1.5 text-xs font-extrabold text-emerald-400 mt-0.5"><span class="w-2 h-2 rounded-full bg-emerald-400 shrink-0"></span><span>${item.value}</span></div>` : `<div class="text-xs font-extrabold truncate" style="color: ${colors.heading};">${item.value}</div>`}
                     </div>
@@ -555,9 +555,9 @@ export class ZipExportService {
         <div class="flex items-center gap-3 text-sm"><span class="text-indigo-400">${this.getSvgIcon('globe', 18)}</span> <div><strong style="color: ${colors.heading};">Website:</strong> ${ct.website}</div></div>
       </div>
       <form class="lg:col-span-7 space-y-4 p-6 rounded-2xl border" style="background-color: ${colors.cardBg}; border-color: ${colors.borderColor};" id="contactForm">
-        <input type="text" placeholder="Your Name" required class="w-full bg-slate-950 border border-slate-800 text-sm font-semibold rounded-xl p-3 text-slate-100" />
-        <input type="email" placeholder="Your Email" required class="w-full bg-slate-950 border border-slate-800 text-sm font-semibold rounded-xl p-3 text-slate-100" />
-        <textarea placeholder="Your Message" rows="4" required class="w-full bg-slate-950 border border-slate-800 text-sm font-semibold rounded-xl p-3 text-slate-100"></textarea>
+        <input type="text" placeholder="Your Name" required class="w-full bg-slate-500/10 border border-slate-500/20 text-sm font-semibold rounded-xl p-3" style="color: ${colors.heading};" />
+        <input type="email" placeholder="Your Email" required class="w-full bg-slate-500/10 border border-slate-500/20 text-sm font-semibold rounded-xl p-3" style="color: ${colors.heading};" />
+        <textarea placeholder="Your Message" rows="4" required class="w-full bg-slate-500/10 border border-slate-500/20 text-sm font-semibold rounded-xl p-3" style="color: ${colors.heading};"></textarea>
         <button type="submit" class="px-6 py-3 rounded-xl font-bold text-sm text-white" style="background-color: ${colors.button};">Send Message</button>
       </form>
     </div>

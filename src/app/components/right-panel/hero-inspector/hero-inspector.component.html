@@ -11,6 +11,71 @@
     (imageUrlChange)="update({ profileImage: $event })"
   ></app-image-picker>
 
+  <!-- PROFILE IMAGE SHAPE & STYLING CONTROLS -->
+  <div *ngIf="hero.profileImage" class="space-y-3 p-4 rounded-xl border border-slate-800 bg-slate-900/60">
+    <label class="text-xs font-extrabold text-slate-200 uppercase tracking-wide">Image Shape & Border Style</label>
+
+    <!-- Shape Pills: Circle, Rounded, Square -->
+    <div class="grid grid-cols-3 gap-2 pt-1">
+      <button
+        (click)="update({ imageShape: 'circle' })"
+        [class.bg-indigo-600]="hero.imageShape === 'circle'"
+        [class.text-white]="hero.imageShape === 'circle'"
+        [class.bg-slate-950]="hero.imageShape !== 'circle'"
+        [class.text-slate-300]="hero.imageShape !== 'circle'"
+        class="flex flex-col items-center justify-center p-2.5 rounded-xl border border-slate-700/60 text-xs font-bold transition-all cursor-pointer"
+      >
+        <div class="w-5 h-5 rounded-full border-2 border-current mb-1"></div>
+        <span>Circle</span>
+      </button>
+
+      <button
+        (click)="update({ imageShape: 'rounded' })"
+        [class.bg-indigo-600]="hero.imageShape === 'rounded'"
+        [class.text-white]="hero.imageShape === 'rounded'"
+        [class.bg-slate-950]="hero.imageShape !== 'rounded'"
+        [class.text-slate-300]="hero.imageShape !== 'rounded'"
+        class="flex flex-col items-center justify-center p-2.5 rounded-xl border border-slate-700/60 text-xs font-bold transition-all cursor-pointer"
+      >
+        <div class="w-5 h-5 rounded-lg border-2 border-current mb-1"></div>
+        <span>Rounded</span>
+      </button>
+
+      <button
+        (click)="update({ imageShape: 'square' })"
+        [class.bg-indigo-600]="hero.imageShape === 'square'"
+        [class.text-white]="hero.imageShape === 'square'"
+        [class.bg-slate-950]="hero.imageShape !== 'square'"
+        [class.text-slate-300]="hero.imageShape !== 'square'"
+        class="flex flex-col items-center justify-center p-2.5 rounded-xl border border-slate-700/60 text-xs font-bold transition-all cursor-pointer"
+      >
+        <div class="w-5 h-5 border-2 border-current mb-1"></div>
+        <span>Square</span>
+      </button>
+    </div>
+
+    <!-- Border & Shadow Toggles -->
+    <div class="flex items-center justify-between pt-2 border-t border-slate-800/80">
+      <label class="text-xs font-bold text-slate-300">Accent Color Border</label>
+      <input
+        type="checkbox"
+        [ngModel]="hero.imageBorder"
+        (ngModelChange)="update({ imageBorder: $event })"
+        class="w-4 h-4 rounded border-slate-700 bg-slate-950 text-indigo-600 focus:ring-indigo-500 cursor-pointer"
+      />
+    </div>
+
+    <div class="flex items-center justify-between pt-1">
+      <label class="text-xs font-bold text-slate-300">Drop Shadow</label>
+      <input
+        type="checkbox"
+        [ngModel]="hero.imageShadow"
+        (ngModelChange)="update({ imageShadow: $event })"
+        class="w-4 h-4 rounded border-slate-700 bg-slate-950 text-indigo-600 focus:ring-indigo-500 cursor-pointer"
+      />
+    </div>
+  </div>
+
   <!-- Name & Color -->
   <div class="space-y-1.5">
     <div class="flex justify-between items-center">
@@ -180,6 +245,59 @@
         [ngModel]="hero.ctaSecondaryUrl"
         (ngModelChange)="update({ ctaSecondaryUrl: $event })"
         class="bg-slate-950 border border-slate-700 text-xs font-mono text-slate-300 rounded-lg p-2.5"
+      />
+    </div>
+  </div>
+
+  <!-- SOCIAL LINKS EDITOR -->
+  <div class="space-y-3 p-4 rounded-xl border border-slate-800 bg-slate-900/60">
+    <div class="flex items-center justify-between">
+      <label class="text-xs font-extrabold text-slate-200 uppercase tracking-wide">Social Media Links</label>
+      <button
+        (click)="addSocialLink()"
+        class="flex items-center gap-1 text-xs font-bold text-indigo-400 hover:text-indigo-300 transition-colors cursor-pointer"
+      >
+        <app-icon name="plus" [size]="14"></app-icon>
+        <span>Add Link</span>
+      </button>
+    </div>
+
+    <div *ngIf="!hero.socialLinks?.length" class="text-xs text-slate-400 italic text-center py-2">
+      No social links added yet. Click "+ Add Link" above to add one.
+    </div>
+
+    <div *ngFor="let s of hero.socialLinks; let i = index" class="p-3 rounded-xl bg-slate-950 border border-slate-800 space-y-2.5">
+      <div class="flex items-center justify-between gap-2">
+        <div class="flex items-center gap-2 flex-1">
+          <select
+            [ngModel]="s.icon"
+            (ngModelChange)="updateSocialLink(i, { icon: $event })"
+            class="bg-slate-900 border border-slate-700 text-xs font-bold text-slate-200 rounded-lg p-2"
+          >
+            <option *ngFor="let opt of availableIcons" [value]="opt.value">{{ opt.label }}</option>
+          </select>
+          <input
+            type="text"
+            placeholder="Platform Name (e.g. GitHub)"
+            [ngModel]="s.platform"
+            (ngModelChange)="updateSocialLink(i, { platform: $event })"
+            class="flex-1 bg-slate-900 border border-slate-700 text-xs font-semibold text-slate-100 rounded-lg p-2"
+          />
+        </div>
+        <button
+          (click)="removeSocialLink(i)"
+          class="p-1.5 text-slate-400 hover:text-rose-400 hover:bg-slate-900 rounded-lg transition-colors cursor-pointer"
+          title="Delete Link"
+        >
+          <app-icon name="trash-2" [size]="14"></app-icon>
+        </button>
+      </div>
+      <input
+        type="text"
+        placeholder="URL (https://github.com/username)"
+        [ngModel]="s.url"
+        (ngModelChange)="updateSocialLink(i, { url: $event })"
+        class="w-full bg-slate-900 border border-slate-700 text-xs font-mono text-slate-300 rounded-lg p-2"
       />
     </div>
   </div>
