@@ -237,7 +237,7 @@ export const DEFAULT_PORTFOLIO_DATA: PortfolioData = {
         college: 'University of California, Berkeley',
         duration: '2013 - 2017',
         grade: '3.8 GPA (Magna Cum Laude)',
-        description: 'Specialized in Software Engineering, Data Structures, Algorithms, and Distributed Systems.',
+        description: '',
       },
       {
         id: '2',
@@ -245,7 +245,7 @@ export const DEFAULT_PORTFOLIO_DATA: PortfolioData = {
         college: 'University Name',
         duration: '2019 - 2023',
         grade: '3.8 GPA',
-        description: 'Focused on algorithms, data structures & software architecture.',
+        description: '',
       },
     ],
   },

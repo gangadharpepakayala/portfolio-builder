@@ -31,7 +31,7 @@ export interface ColorSettings {
 }
 
 export interface TypographySettings {
-  fontFamily: 'Inter' | 'Poppins' | 'Roboto' | 'Montserrat' | 'Outfit' | 'Nunito' | 'Lato' | 'Space Grotesk';
+  fontFamily: string;
   headingSize: 'sm' | 'md' | 'lg' | 'xl' | '2xl';
   paragraphSize: 'sm' | 'md' | 'lg';
   lineHeight: 'tight' | 'normal' | 'relaxed' | 'loose';

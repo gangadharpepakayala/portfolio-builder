@@ -95,7 +95,16 @@ export class PortfolioStateService {
               (item) =>
                 !item.degree.toLowerCase().includes('aws') &&
                 !item.college.toLowerCase().includes('amazon')
-            );
+            ).map((item) => {
+              if (
+                item.description &&
+                (item.description.includes('Focused on algorithms') ||
+                  item.description.includes('Specialized in Software Engineering'))
+              ) {
+                return { ...item, description: '' };
+              }
+              return item;
+            });
           }
         }
         // Migrate customDetails if missing or empty

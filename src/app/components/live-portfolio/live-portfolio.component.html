@@ -1,4 +1,7 @@
-<div class="w-full min-h-full flex flex-col font-sans transition-colors duration-300 relative">
+<div
+  class="w-full min-h-full flex flex-col transition-colors duration-300 relative"
+  [style.fontFamily]="state.portfolio().typography.fontFamily + ', sans-serif'"
+>
   <!-- Live Sticky Navbar Section -->
   <app-navbar-section></app-navbar-section>
 

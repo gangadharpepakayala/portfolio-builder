@@ -104,6 +104,18 @@ import { ImagePickerComponent } from '../../../shared/components/image-picker/im
               (imageUrlChange)="updateProjectItem(p.id, { image: $event })"
             ></app-image-picker>
 
+            <!-- Tech Stack / Project Tags Editor -->
+            <div class="space-y-1 pt-1">
+              <label class="text-[10px] font-bold text-slate-400">Tech Stack / Project Tags (Comma Separated)</label>
+              <input
+                type="text"
+                placeholder="Angular, RxJS, Stripe API, TailwindCSS"
+                [ngModel]="getTagsString(p.tags)"
+                (ngModelChange)="updateProjectTags(p.id, $event)"
+                class="w-full bg-slate-950 border border-slate-700 text-xs font-semibold text-indigo-300 rounded-lg p-2.5 focus:outline-none focus:border-indigo-500"
+              />
+            </div>
+
             <div class="grid grid-cols-2 gap-2 pt-1">
               <input
                 type="text"
@@ -135,6 +147,18 @@ export class ProjectsInspectorComponent {
 
   trackById(_: number, item: ProjectItem): string {
     return item.id;
+  }
+
+  getTagsString(tags: string[] | undefined): string {
+    return Array.isArray(tags) ? tags.join(', ') : '';
+  }
+
+  updateProjectTags(id: string, value: string) {
+    const tags = value
+      .split(',')
+      .map((t) => t.trim())
+      .filter((t) => t.length > 0);
+    this.updateProjectItem(id, { tags });
   }
 
   updateSection(partial: Partial<ProjectsSection>) {

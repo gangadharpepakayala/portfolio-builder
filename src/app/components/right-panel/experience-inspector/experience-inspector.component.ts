@@ -108,6 +108,18 @@ import { IconComponent } from '../../../shared/components/icon/icon.component';
                 class="w-full min-h-[120px] bg-slate-950 border border-slate-700 text-xs text-slate-100 rounded-lg p-3 focus:outline-none focus:border-indigo-500 leading-relaxed"
               ></textarea>
             </div>
+
+            <!-- Technologies & Tech Stack Editor -->
+            <div class="space-y-1 pt-1">
+              <label class="text-[10px] font-bold text-slate-400">Technologies & Tech Stack (Comma Separated)</label>
+              <input
+                type="text"
+                placeholder="Angular, TypeScript, TailwindCSS, RxJS, Micro-frontends"
+                [ngModel]="getTechString(item.technologies)"
+                (ngModelChange)="updateTechStack(item.id, $event)"
+                class="w-full bg-slate-950 border border-slate-700 text-xs font-semibold text-indigo-300 rounded-lg p-2.5 focus:outline-none focus:border-indigo-500"
+              />
+            </div>
           </div>
         </div>
       </div>
@@ -123,6 +135,18 @@ export class ExperienceInspectorComponent {
 
   trackById(_: number, item: ExperienceItem): string {
     return item.id;
+  }
+
+  getTechString(techs: string[] | undefined): string {
+    return Array.isArray(techs) ? techs.join(', ') : '';
+  }
+
+  updateTechStack(id: string, value: string) {
+    const technologies = value
+      .split(',')
+      .map((t) => t.trim())
+      .filter((t) => t.length > 0);
+    this.updateExpItem(id, { technologies });
   }
 
   updateSection(partial: Partial<ExperienceSection>) {

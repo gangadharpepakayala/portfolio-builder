@@ -46,7 +46,7 @@ import { IconComponent } from '../../../shared/components/icon/icon.component';
               <div class="text-xs text-slate-400 font-medium pt-1">
                 {{ item.duration }} &bull; {{ item.grade }}
               </div>
-              <p class="text-xs pt-2 leading-relaxed" [style.color]="state.portfolio().colors.text">
+              <p *ngIf="item.description" class="text-xs pt-2 leading-relaxed" [style.color]="state.portfolio().colors.text">
                 {{ item.description }}
               </p>
             </div>
