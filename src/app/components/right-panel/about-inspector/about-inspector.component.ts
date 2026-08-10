@@ -28,6 +28,10 @@ export class AboutInspectorComponent {
     return item.id;
   }
 
+  trackByIndex(index: number): number {
+    return index;
+  }
+
   update(partial: Partial<AboutSection>) {
     this.state.updateAbout(partial);
   }

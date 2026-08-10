@@ -54,10 +54,10 @@ import { IconComponent } from '../../../shared/components/icon/icon.component';
         />
       </div>
 
-      <!-- Experience Cards List -->
+      <!-- Experience Cards List (trackBy: trackById prevents DOM input focus loss) -->
       <div class="space-y-4 pt-2">
         <div
-          *ngFor="let item of expSection.experiences; let i = index"
+          *ngFor="let item of expSection.experiences; let i = index; trackBy: trackById"
           class="p-4 rounded-xl border border-slate-800 bg-slate-900/70 space-y-3 shadow-sm"
         >
           <div class="flex items-center justify-between">
@@ -97,7 +97,7 @@ import { IconComponent } from '../../../shared/components/icon/icon.component';
               />
             </div>
 
-            <!-- Increased Min Height & Rows for Experience Description -->
+            <!-- Job Description -->
             <div class="space-y-1">
               <label class="text-[10px] font-bold text-slate-400">Job Description & Accomplishments</label>
               <textarea
@@ -119,6 +119,10 @@ export class ExperienceInspectorComponent {
 
   get expSection(): ExperienceSection {
     return this.state.portfolio().experience;
+  }
+
+  trackById(_: number, item: ExperienceItem): string {
+    return item.id;
   }
 
   updateSection(partial: Partial<ExperienceSection>) {

@@ -249,7 +249,7 @@
     </div>
   </div>
 
-  <!-- SOCIAL LINKS EDITOR -->
+  <!-- SOCIAL LINKS EDITOR (trackBy: trackByIndex keeps input focus) -->
   <div class="space-y-3 p-4 rounded-xl border border-slate-800 bg-slate-900/60">
     <div class="flex items-center justify-between">
       <label class="text-xs font-extrabold text-slate-200 uppercase tracking-wide">Social Media Links</label>
@@ -266,7 +266,7 @@
       No social links added yet. Click "+ Add Link" above to add one.
     </div>
 
-    <div *ngFor="let s of hero.socialLinks; let i = index" class="p-3 rounded-xl bg-slate-950 border border-slate-800 space-y-2.5">
+    <div *ngFor="let s of hero.socialLinks; let i = index; trackBy: trackByIndex" class="p-3 rounded-xl bg-slate-950 border border-slate-800 space-y-2.5">
       <div class="flex items-center justify-between gap-2">
         <div class="flex items-center gap-2 flex-1">
           <select

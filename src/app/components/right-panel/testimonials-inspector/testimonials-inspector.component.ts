@@ -65,10 +65,10 @@ import { IconComponent } from '../../../shared/components/icon/icon.component';
         />
       </div>
 
-      <!-- Testimonials Cards List -->
+      <!-- Testimonials Cards List (trackBy: trackById prevents DOM input focus loss) -->
       <div class="space-y-4 pt-2">
         <div
-          *ngFor="let item of testSection.testimonials; let i = index"
+          *ngFor="let item of testSection.testimonials; let i = index; trackBy: trackById"
           class="p-4 rounded-xl border border-slate-800 bg-slate-900/70 space-y-3 shadow-sm"
         >
           <div class="flex items-center justify-between">
@@ -140,6 +140,10 @@ export class TestimonialsInspectorComponent {
 
   get testSection(): TestimonialsSection {
     return this.state.portfolio().testimonials;
+  }
+
+  trackById(_: number, item: TestimonialItem): string {
+    return item.id;
   }
 
   updateSection(partial: Partial<TestimonialsSection>) {

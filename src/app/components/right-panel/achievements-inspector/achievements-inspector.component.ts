@@ -65,10 +65,10 @@ import { IconComponent } from '../../../shared/components/icon/icon.component';
         />
       </div>
 
-      <!-- Achievements Cards List -->
+      <!-- Achievements Cards List (trackBy: trackById prevents DOM input focus loss) -->
       <div class="space-y-4 pt-2">
         <div
-          *ngFor="let item of achSection.achievements; let i = index"
+          *ngFor="let item of achSection.achievements; let i = index; trackBy: trackById"
           class="p-4 rounded-xl border border-slate-800 bg-slate-900/70 space-y-3 shadow-sm"
         >
           <div class="flex items-center justify-between">
@@ -126,6 +126,10 @@ export class AchievementsInspectorComponent {
 
   get achSection(): AchievementsSection {
     return this.state.portfolio().achievements;
+  }
+
+  trackById(_: number, item: AchievementItem): string {
+    return item.id;
   }
 
   updateSection(partial: Partial<AchievementsSection>) {

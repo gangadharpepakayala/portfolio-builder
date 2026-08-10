@@ -63,10 +63,10 @@ import { ImagePickerComponent } from '../../../shared/components/image-picker/im
         />
       </div>
 
-      <!-- Project Cards List -->
+      <!-- Project Cards List (trackBy: trackById prevents DOM input focus loss) -->
       <div class="space-y-4 pt-2">
         <div
-          *ngFor="let p of projectsSection.projects; let i = index"
+          *ngFor="let p of projectsSection.projects; let i = index; trackBy: trackById"
           class="p-4 rounded-xl border border-slate-800 bg-slate-900/70 space-y-3 shadow-sm"
         >
           <div class="flex items-center justify-between">
@@ -131,6 +131,10 @@ export class ProjectsInspectorComponent {
 
   get projectsSection(): ProjectsSection {
     return this.state.portfolio().projects;
+  }
+
+  trackById(_: number, item: ProjectItem): string {
+    return item.id;
   }
 
   updateSection(partial: Partial<ProjectsSection>) {

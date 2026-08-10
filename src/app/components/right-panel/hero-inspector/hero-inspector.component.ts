@@ -30,6 +30,10 @@ export class HeroInspectorComponent {
     return this.state.portfolio().hero;
   }
 
+  trackByIndex(index: number): number {
+    return index;
+  }
+
   update(partial: Partial<HeroSection>) {
     this.state.updateHero(partial);
   }

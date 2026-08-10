@@ -57,7 +57,7 @@ import { IconComponent } from '../../../shared/components/icon/icon.component';
       <!-- Skills Cards List -->
       <div class="space-y-3 pt-2">
         <div
-          *ngFor="let item of skillsSection.skills; let i = index"
+          *ngFor="let item of skillsSection.skills; let i = index; trackBy: trackById"
           class="p-3.5 rounded-xl border border-slate-800 bg-slate-900/70 space-y-3 shadow-sm"
         >
           <div class="flex items-center justify-between">
@@ -126,6 +126,10 @@ export class SkillsInspectorComponent {
 
   get skillsSection(): SkillsSection {
     return this.state.portfolio().skills;
+  }
+
+  trackById(_: number, item: SkillItem): string {
+    return item.id;
   }
 
   updateSection(partial: Partial<SkillsSection>) {

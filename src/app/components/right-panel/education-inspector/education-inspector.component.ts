@@ -33,7 +33,7 @@ import { IconComponent } from '../../../shared/components/icon/icon.component';
 
       <div class="space-y-3 pt-2">
         <div
-          *ngFor="let item of eduSection.items; let i = index"
+          *ngFor="let item of eduSection.items; let i = index; trackBy: trackById"
           class="p-3 rounded-xl border border-slate-800 bg-slate-900/60 space-y-2"
         >
           <div class="flex items-center justify-between">
@@ -85,6 +85,10 @@ export class EducationInspectorComponent {
 
   get eduSection(): EducationSection {
     return this.state.portfolio().education;
+  }
+
+  trackById(_: number, item: EducationItem): string {
+    return item.id;
   }
 
   updateSection(partial: Partial<EducationSection>) {

@@ -19,6 +19,10 @@ export class CertificationsInspectorComponent {
     return this.state.portfolio().certifications;
   }
 
+  trackById(_: number, item: CertificationItem): string {
+    return item.id;
+  }
+
   updateSection(partial: Partial<CertificationsSection>) {
     this.state.updateCertifications(partial);
   }
