@@ -13,12 +13,24 @@ import { IconComponent } from '../../../shared/components/icon/icon.component';
     <div class="space-y-4">
       <div class="flex items-center justify-between pb-2 border-b border-slate-800">
         <h3 class="text-xs font-bold text-indigo-400 uppercase tracking-wider">Education Section</h3>
-        <button
-          (click)="addEdu()"
-          class="flex items-center gap-1 text-[11px] font-bold text-white bg-indigo-600 hover:bg-indigo-500 px-2.5 py-1 rounded-lg transition-colors cursor-pointer"
-        >
-          <app-icon name="plus" [size]="12"></app-icon> Add Degree
-        </button>
+        <div class="flex items-center gap-2">
+          <button
+            type="button"
+            (click)="state.toggleSectionVisibility('education')"
+            class="flex items-center gap-1.5 text-xs font-bold px-2.5 py-1 rounded-lg border transition-all cursor-pointer shadow-sm"
+            [ngClass]="state.portfolio().education.visible ? 'bg-slate-800 border-slate-700 text-slate-200 hover:bg-slate-700' : 'bg-rose-950/80 border-rose-800 text-rose-300 hover:bg-rose-900'"
+            [title]="state.portfolio().education.visible ? 'Hide Education section' : 'Show Education section'"
+          >
+            <app-icon [name]="state.portfolio().education.visible ? 'eye' : 'eye-off'" [size]="12"></app-icon>
+            <span>{{ state.portfolio().education.visible ? 'Hide Section' : 'Show Section' }}</span>
+          </button>
+          <button
+            (click)="addEdu()"
+            class="flex items-center gap-1 text-[11px] font-bold text-white bg-indigo-600 hover:bg-indigo-500 px-2.5 py-1 rounded-lg transition-colors cursor-pointer"
+          >
+            <app-icon name="plus" [size]="12"></app-icon> Add Degree
+          </button>
+        </div>
       </div>
 
       <div class="space-y-1">

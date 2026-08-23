@@ -34,6 +34,7 @@ export class PortfolioStateService {
   readonly selectedItemId = signal<string | null>(null);
   readonly activeTab = signal<'theme' | 'typography' | 'images' | 'sections' | 'layout' | 'export'>('theme');
   readonly previewMode = signal<boolean>(false);
+  readonly activeView = signal<'intro' | 'builder'>('intro');
 
   // Undo/Redo stacks tracked with signals for reactive updates
   private readonly pastStack = signal<PortfolioData[]>([]);
@@ -119,6 +120,21 @@ export class PortfolioStateService {
           } else {
             state.sectionOrder.push('certifications');
           }
+        }
+        // Ensure projects have default showLiveDemo and showGithub flags
+        if (state.projects && state.projects.projects) {
+          state.projects.projects = state.projects.projects.map((p) => ({
+            ...p,
+            showLiveDemo: p.showLiveDemo ?? true,
+            showGithub: p.showGithub ?? true,
+          }));
+        }
+        // Clean footer copyright text if it contains Built with Portfolio Builder
+        if (state.footer && state.footer.copyrightText) {
+          state.footer.copyrightText = state.footer.copyrightText.replace(
+            /\.?\s*Built with Portfolio Builder by Gangadhar\.?/gi,
+            ''
+          ).trim();
         }
         return state;
       }
@@ -346,6 +362,14 @@ export class PortfolioStateService {
 
   togglePreviewMode() {
     this.previewMode.set(!this.previewMode());
+  }
+
+  navigateToBuilder() {
+    this.activeView.set('builder');
+  }
+
+  navigateToIntro() {
+    this.activeView.set('intro');
   }
 
   // History Controls (Undo / Redo)

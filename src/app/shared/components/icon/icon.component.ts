@@ -236,6 +236,27 @@ import { CommonModule } from '@angular/common';
           <path d="m6 12-1.9 2" />
         </ng-container>
 
+        <!-- chevron-left -->
+        <ng-container *ngSwitchCase="'chevron-left'">
+          <path d="m15 18-6-6 6-6" />
+        </ng-container>
+
+        <!-- chevron-right -->
+        <ng-container *ngSwitchCase="'chevron-right'">
+          <path d="m9 18 6-6-6-6" />
+        </ng-container>
+
+        <!-- sparkles -->
+        <ng-container *ngSwitchCase="'sparkles'">
+          <path d="m12 3-1.9 5.8a2 2 0 0 1-1.3 1.3L3 12l5.8 1.9a2 2 0 0 1 1.3 1.3L12 21l1.9-5.8a2 2 0 0 1 1.3-1.3L21 12l-5.8-1.9a2 2 0 0 1-1.3-1.3Z" />
+        </ng-container>
+
+        <!-- arrow-right -->
+        <ng-container *ngSwitchCase="'arrow-right'">
+          <path d="M5 12h14" />
+          <path d="m12 5 7 7-7 7" />
+        </ng-container>
+
         <!-- globe / default -->
         <ng-container *ngSwitchDefault>
           <circle cx="12" cy="12" r="10" />

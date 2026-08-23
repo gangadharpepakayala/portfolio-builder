@@ -13,13 +13,25 @@ import { ImagePickerComponent } from '../../../shared/components/image-picker/im
   template: `
     <div class="space-y-5">
       <div class="flex items-center justify-between pb-3 border-b border-slate-800">
-        <h3 class="text-sm font-bold text-indigo-400 uppercase tracking-wider">Projects Section & Cards</h3>
-        <button
-          (click)="addProject()"
-          class="flex items-center gap-1.5 text-xs font-bold text-white bg-indigo-600 hover:bg-indigo-500 px-3 py-1.5 rounded-lg transition-colors cursor-pointer shadow-sm"
-        >
-          <app-icon name="plus" [size]="14"></app-icon> Add Project Card
-        </button>
+        <h3 class="text-sm font-bold text-indigo-400 uppercase tracking-wider">Projects Section</h3>
+        <div class="flex items-center gap-2">
+          <button
+            type="button"
+            (click)="state.toggleSectionVisibility('projects')"
+            class="flex items-center gap-1.5 text-xs font-bold px-2.5 py-1.5 rounded-lg border transition-all cursor-pointer shadow-sm"
+            [ngClass]="state.portfolio().projects.visible ? 'bg-slate-800 border-slate-700 text-slate-200 hover:bg-slate-700' : 'bg-rose-950/80 border-rose-800 text-rose-300 hover:bg-rose-900'"
+            [title]="state.portfolio().projects.visible ? 'Hide Projects section' : 'Show Projects section'"
+          >
+            <app-icon [name]="state.portfolio().projects.visible ? 'eye' : 'eye-off'" [size]="14"></app-icon>
+            <span>{{ state.portfolio().projects.visible ? 'Hide Section' : 'Show Section' }}</span>
+          </button>
+          <button
+            (click)="addProject()"
+            class="flex items-center gap-1.5 text-xs font-bold text-white bg-indigo-600 hover:bg-indigo-500 px-3 py-1.5 rounded-lg transition-colors cursor-pointer shadow-sm"
+          >
+            <app-icon name="plus" [size]="14"></app-icon> Add Project
+          </button>
+        </div>
       </div>
 
       <!-- Title & Title Color -->
@@ -116,21 +128,87 @@ import { ImagePickerComponent } from '../../../shared/components/image-picker/im
               />
             </div>
 
-            <div class="grid grid-cols-2 gap-2 pt-1">
-              <input
-                type="text"
-                placeholder="Live Demo URL"
-                [ngModel]="p.liveDemoUrl"
-                (ngModelChange)="updateProjectItem(p.id, { liveDemoUrl: $event })"
-                class="bg-slate-950 border border-slate-700 text-xs font-mono text-slate-200 rounded-lg p-2"
-              />
-              <input
-                type="text"
-                placeholder="GitHub Repo URL"
-                [ngModel]="p.githubUrl"
-                (ngModelChange)="updateProjectItem(p.id, { githubUrl: $event })"
-                class="bg-slate-950 border border-slate-700 text-xs font-mono text-slate-200 rounded-lg p-2"
-              />
+            <!-- Project Links & Buttons (Hide / Show & Delete Options) -->
+            <div class="space-y-2.5 pt-2 border-t border-slate-800">
+              <span class="text-[10px] font-extrabold text-slate-400 uppercase tracking-wider block">Project Link Buttons</span>
+
+              <!-- Live Demo Link Controls -->
+              <div class="p-2.5 rounded-lg border border-slate-800 bg-slate-950/80 space-y-2">
+                <div class="flex items-center justify-between">
+                  <span class="text-xs font-bold text-slate-300 flex items-center gap-1.5">
+                    <app-icon name="globe" [size]="13" class="text-indigo-400"></app-icon> Live Demo Link
+                  </span>
+                  <div class="flex items-center gap-1.5">
+                    <!-- Hide / Show Toggle Button -->
+                    <button
+                      type="button"
+                      (click)="updateProjectItem(p.id, { showLiveDemo: p.showLiveDemo === false ? true : false })"
+                      class="flex items-center gap-1 text-[10px] font-bold px-2 py-0.5 rounded transition-colors cursor-pointer"
+                      [ngClass]="p.showLiveDemo !== false ? 'bg-indigo-950 text-indigo-300 border border-indigo-700/50' : 'bg-slate-800 text-slate-400 border border-slate-700'"
+                      [title]="p.showLiveDemo !== false ? 'Hide Live Demo button' : 'Show Live Demo button'"
+                    >
+                      <app-icon [name]="p.showLiveDemo !== false ? 'eye' : 'eye-off'" [size]="12"></app-icon>
+                      {{ p.showLiveDemo !== false ? 'Visible' : 'Hidden' }}
+                    </button>
+                    <!-- Delete / Clear Button -->
+                    <button
+                      type="button"
+                      (click)="updateProjectItem(p.id, { liveDemoUrl: '', showLiveDemo: false })"
+                      class="flex items-center gap-1 text-[10px] font-bold text-rose-400 hover:text-rose-300 hover:bg-slate-800 px-1.5 py-0.5 rounded transition-colors cursor-pointer"
+                      title="Clear URL & Delete Live Demo Button"
+                    >
+                      <app-icon name="trash-2" [size]="12"></app-icon>
+                      Delete
+                    </button>
+                  </div>
+                </div>
+                <input
+                  type="text"
+                  placeholder="Live Demo URL (e.g. https://example.com)"
+                  [ngModel]="p.liveDemoUrl"
+                  (ngModelChange)="updateProjectItem(p.id, { liveDemoUrl: $event })"
+                  class="w-full bg-slate-900 border border-slate-700 text-xs font-mono text-slate-200 rounded-md p-2 focus:outline-none focus:border-indigo-500"
+                />
+              </div>
+
+              <!-- GitHub Repo Link Controls -->
+              <div class="p-2.5 rounded-lg border border-slate-800 bg-slate-950/80 space-y-2">
+                <div class="flex items-center justify-between">
+                  <span class="text-xs font-bold text-slate-300 flex items-center gap-1.5">
+                    <app-icon name="github" [size]="13" class="text-indigo-400"></app-icon> GitHub Repo Link
+                  </span>
+                  <div class="flex items-center gap-1.5">
+                    <!-- Hide / Show Toggle Button -->
+                    <button
+                      type="button"
+                      (click)="updateProjectItem(p.id, { showGithub: p.showGithub === false ? true : false })"
+                      class="flex items-center gap-1 text-[10px] font-bold px-2 py-0.5 rounded transition-colors cursor-pointer"
+                      [ngClass]="p.showGithub !== false ? 'bg-indigo-950 text-indigo-300 border border-indigo-700/50' : 'bg-slate-800 text-slate-400 border border-slate-700'"
+                      [title]="p.showGithub !== false ? 'Hide GitHub button' : 'Show GitHub button'"
+                    >
+                      <app-icon [name]="p.showGithub !== false ? 'eye' : 'eye-off'" [size]="12"></app-icon>
+                      {{ p.showGithub !== false ? 'Visible' : 'Hidden' }}
+                    </button>
+                    <!-- Delete / Clear Button -->
+                    <button
+                      type="button"
+                      (click)="updateProjectItem(p.id, { githubUrl: '', showGithub: false })"
+                      class="flex items-center gap-1 text-[10px] font-bold text-rose-400 hover:text-rose-300 hover:bg-slate-800 px-1.5 py-0.5 rounded transition-colors cursor-pointer"
+                      title="Clear URL & Delete GitHub Button"
+                    >
+                      <app-icon name="trash-2" [size]="12"></app-icon>
+                      Delete
+                    </button>
+                  </div>
+                </div>
+                <input
+                  type="text"
+                  placeholder="GitHub Repo URL (e.g. https://github.com/user/repo)"
+                  [ngModel]="p.githubUrl"
+                  (ngModelChange)="updateProjectItem(p.id, { githubUrl: $event })"
+                  class="w-full bg-slate-900 border border-slate-700 text-xs font-mono text-slate-200 rounded-md p-2 focus:outline-none focus:border-indigo-500"
+                />
+              </div>
             </div>
           </div>
         </div>
@@ -175,6 +253,8 @@ export class ProjectsInspectorComponent {
       liveDemoUrl: 'https://example.com',
       tags: ['Angular', 'TypeScript', 'TailwindCSS'],
       featured: true,
+      showLiveDemo: true,
+      showGithub: true,
     };
     this.updateSection({
       projects: [...this.projectsSection.projects, newProject],

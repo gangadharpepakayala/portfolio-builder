@@ -13,12 +13,24 @@ import { IconComponent } from '../../../shared/components/icon/icon.component';
     <div class="space-y-5">
       <div class="flex items-center justify-between pb-3 border-b border-slate-800">
         <h3 class="text-sm font-bold text-indigo-400 uppercase tracking-wider">Skills Section & Styles</h3>
-        <button
-          (click)="addSkill()"
-          class="flex items-center gap-1.5 text-xs font-bold text-white bg-indigo-600 hover:bg-indigo-500 px-3 py-1.5 rounded-lg transition-colors cursor-pointer shadow-sm"
-        >
-          <app-icon name="plus" [size]="14"></app-icon> Add Skill Card
-        </button>
+        <div class="flex items-center gap-2">
+          <button
+            type="button"
+            (click)="state.toggleSectionVisibility('skills')"
+            class="flex items-center gap-1.5 text-xs font-bold px-2.5 py-1.5 rounded-lg border transition-all cursor-pointer shadow-sm"
+            [ngClass]="state.portfolio().skills.visible ? 'bg-slate-800 border-slate-700 text-slate-200 hover:bg-slate-700' : 'bg-rose-950/80 border-rose-800 text-rose-300 hover:bg-rose-900'"
+            [title]="state.portfolio().skills.visible ? 'Hide Skills section' : 'Show Skills section'"
+          >
+            <app-icon [name]="state.portfolio().skills.visible ? 'eye' : 'eye-off'" [size]="14"></app-icon>
+            <span>{{ state.portfolio().skills.visible ? 'Hide Section' : 'Show Section' }}</span>
+          </button>
+          <button
+            (click)="addSkill()"
+            class="flex items-center gap-1.5 text-xs font-bold text-white bg-indigo-600 hover:bg-indigo-500 px-3 py-1.5 rounded-lg transition-colors cursor-pointer shadow-sm"
+          >
+            <app-icon name="plus" [size]="14"></app-icon> Add Skill
+          </button>
+        </div>
       </div>
 
       <!-- Title & Title Color -->

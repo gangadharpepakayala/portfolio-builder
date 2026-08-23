@@ -54,9 +54,11 @@
         [class.bg-indigo-600]="state.selectedSectionId() === sec.id"
         [class.text-white]="state.selectedSectionId() === sec.id"
         [class.text-slate-400]="state.selectedSectionId() !== sec.id"
-        class="px-2.5 py-1.5 rounded-lg text-xs font-bold capitalize whitespace-nowrap bg-slate-900 border border-slate-800 transition-all cursor-pointer shadow-sm shrink-0"
+        class="px-2.5 py-1.5 rounded-lg text-xs font-bold capitalize whitespace-nowrap bg-slate-900 border transition-all cursor-pointer shadow-sm shrink-0 flex items-center gap-1.5"
+        [ngClass]="isSectionHidden(sec.id) ? 'border-rose-900/60' : 'border-slate-800'"
       >
-        {{ sec.label }}
+        <span *ngIf="isSectionHidden(sec.id)" class="w-1.5 h-1.5 rounded-full bg-rose-500 shrink-0" title="Section Hidden"></span>
+        <span>{{ sec.label }}</span>
       </button>
     </div>
   </div>

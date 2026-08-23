@@ -187,6 +187,8 @@ export interface ProjectItem {
   liveDemoUrl: string;
   tags: string[];
   featured: boolean;
+  showLiveDemo?: boolean;
+  showGithub?: boolean;
 }
 
 export interface ProjectsSection extends BaseSectionStyles {
@@ -291,6 +293,7 @@ export interface FooterSection {
 }
 
 export type SectionType =
+  | 'navbar'
   | 'hero'
   | 'about'
   | 'skills'
@@ -300,7 +303,8 @@ export type SectionType =
   | 'certifications'
   | 'achievements'
   | 'testimonials'
-  | 'contact';
+  | 'contact'
+  | 'footer';
 
 export interface PortfolioData {
   themePreset: ThemePresetKey;

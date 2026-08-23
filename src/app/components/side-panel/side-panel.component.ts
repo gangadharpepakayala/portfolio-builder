@@ -22,6 +22,8 @@ import { TabLayoutComponent } from '../left-sidebar/tab-layout/tab-layout.compon
 import { TabExportComponent } from '../left-sidebar/tab-export/tab-export.component';
 import { IconComponent } from '../../shared/components/icon/icon.component';
 
+import { SectionType } from '../../core/models/portfolio.model';
+
 @Component({
   selector: 'app-side-panel',
   standalone: true,
@@ -82,4 +84,23 @@ export class SidePanelComponent {
     { id: 'contact', label: 'Contact' },
     { id: 'footer', label: 'Footer' },
   ];
+
+  get isSelectedSectionVisible(): boolean {
+    const secId = this.state.selectedSectionId();
+    if (!secId) return true;
+    const portfolio = this.state.portfolio() as any;
+    return portfolio[secId]?.visible !== false;
+  }
+
+  toggleSelectedSectionVisibility() {
+    const secId = this.state.selectedSectionId();
+    if (secId) {
+      this.state.toggleSectionVisibility(secId as SectionType);
+    }
+  }
+
+  isSectionHidden(sectionId: string): boolean {
+    const portfolio = this.state.portfolio() as any;
+    return portfolio[sectionId]?.visible === false;
+  }
 }

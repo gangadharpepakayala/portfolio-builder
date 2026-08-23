@@ -4,15 +4,29 @@ import { FormsModule } from '@angular/forms';
 import { PortfolioStateService } from '../../../core/services/portfolio-state.service';
 import { ContactSection } from '../../../core/models/portfolio.model';
 
+import { IconComponent } from '../../../shared/components/icon/icon.component';
+
 @Component({
   selector: 'app-contact-inspector',
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, IconComponent],
   template: `
     <div class="space-y-4">
       <div class="flex items-center justify-between pb-2 border-b border-slate-800">
-        <h3 class="text-xs font-bold text-indigo-400 uppercase tracking-wider">Contact Section</h3>
-        <span class="text-[10px] bg-indigo-500/10 text-indigo-400 px-2 py-0.5 rounded font-mono">#contact</span>
+        <div class="flex items-center gap-2">
+          <h3 class="text-xs font-bold text-indigo-400 uppercase tracking-wider">Contact Section</h3>
+          <span class="text-[10px] bg-indigo-500/10 text-indigo-400 px-2 py-0.5 rounded font-mono">#contact</span>
+        </div>
+        <button
+          type="button"
+          (click)="state.toggleSectionVisibility('contact')"
+          class="flex items-center gap-1 text-[11px] font-bold px-2.5 py-1 rounded-lg border transition-all cursor-pointer shadow-sm"
+          [ngClass]="state.portfolio().contact.visible ? 'bg-slate-800 border-slate-700 text-slate-200 hover:bg-slate-700' : 'bg-rose-950/80 border-rose-800 text-rose-300 hover:bg-rose-900'"
+          [title]="state.portfolio().contact.visible ? 'Hide Contact section' : 'Show Contact section'"
+        >
+          <app-icon [name]="state.portfolio().contact.visible ? 'eye' : 'eye-off'" [size]="12"></app-icon>
+          <span>{{ state.portfolio().contact.visible ? 'Hide Section' : 'Show Section' }}</span>
+        </button>
       </div>
 
       <div class="space-y-1">

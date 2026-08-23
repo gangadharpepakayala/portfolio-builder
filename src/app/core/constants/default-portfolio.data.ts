@@ -200,6 +200,8 @@ export const DEFAULT_PORTFOLIO_DATA: PortfolioData = {
         liveDemoUrl: 'https://example.com',
         tags: ['Angular', 'Canvas API', 'TailwindCSS'],
         featured: true,
+        showLiveDemo: true,
+        showGithub: true,
       },
       {
         id: '2',
@@ -211,6 +213,8 @@ export const DEFAULT_PORTFOLIO_DATA: PortfolioData = {
         liveDemoUrl: 'https://example.com',
         tags: ['TypeScript', 'Node.js', 'Chart.js'],
         featured: true,
+        showLiveDemo: true,
+        showGithub: true,
       },
       {
         id: '3',
@@ -222,6 +226,8 @@ export const DEFAULT_PORTFOLIO_DATA: PortfolioData = {
         liveDemoUrl: 'https://example.com',
         tags: ['Angular', 'RxJS', 'Stripe API'],
         featured: true,
+        showLiveDemo: true,
+        showGithub: true,
       },
     ],
   },
@@ -348,7 +354,7 @@ export const DEFAULT_PORTFOLIO_DATA: PortfolioData = {
   footer: {
     id: 'footer',
     visible: true,
-    copyrightText: '© 2026 Alex Rivera. Built with Portfolio Builder by Gangadhar.',
+    copyrightText: '© 2026 Alex Rivera.',
     showSocialIcons: true,
     bgColor: '#090d16',
     textColor: '#94a3b8',

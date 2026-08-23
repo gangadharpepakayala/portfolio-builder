@@ -12,13 +12,25 @@ import { IconComponent } from '../../../shared/components/icon/icon.component';
   template: `
     <div class="space-y-5">
       <div class="flex items-center justify-between pb-3 border-b border-slate-800">
-        <h3 class="text-sm font-bold text-indigo-400 uppercase tracking-wider">Client & Peer Endorsements</h3>
-        <button
-          (click)="addTestimonial()"
-          class="flex items-center gap-1.5 text-xs font-bold text-white bg-indigo-600 hover:bg-indigo-500 px-3 py-1.5 rounded-lg transition-colors cursor-pointer shadow-sm"
-        >
-          <app-icon name="plus" [size]="14"></app-icon> Add Endorsement Card
-        </button>
+        <h3 class="text-sm font-bold text-indigo-400 uppercase tracking-wider">Endorsements Section</h3>
+        <div class="flex items-center gap-2">
+          <button
+            type="button"
+            (click)="state.toggleSectionVisibility('testimonials')"
+            class="flex items-center gap-1.5 text-xs font-bold px-2.5 py-1.5 rounded-lg border transition-all cursor-pointer shadow-sm"
+            [ngClass]="state.portfolio().testimonials.visible ? 'bg-slate-800 border-slate-700 text-slate-200 hover:bg-slate-700' : 'bg-rose-950/80 border-rose-800 text-rose-300 hover:bg-rose-900'"
+            [title]="state.portfolio().testimonials.visible ? 'Hide Testimonials section' : 'Show Testimonials section'"
+          >
+            <app-icon [name]="state.portfolio().testimonials.visible ? 'eye' : 'eye-off'" [size]="14"></app-icon>
+            <span>{{ state.portfolio().testimonials.visible ? 'Hide Section' : 'Show Section' }}</span>
+          </button>
+          <button
+            (click)="addTestimonial()"
+            class="flex items-center gap-1.5 text-xs font-bold text-white bg-indigo-600 hover:bg-indigo-500 px-3 py-1.5 rounded-lg transition-colors cursor-pointer shadow-sm"
+          >
+            <app-icon name="plus" [size]="14"></app-icon> Add Card
+          </button>
+        </div>
       </div>
 
       <!-- Title & Title Color -->

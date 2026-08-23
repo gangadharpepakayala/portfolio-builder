@@ -52,21 +52,26 @@ import { PortfolioStateService } from '../../../core/services/portfolio-state.se
                   </span>
                 </div>
 
-                <div class="flex items-center gap-3 pt-2 border-t border-white/5">
+                <div
+                  *ngIf="(p.showLiveDemo !== false && p.liveDemoUrl) || (p.showGithub !== false && p.githubUrl)"
+                  class="flex items-center gap-3 pt-2 border-t border-white/5"
+                >
                   <a
+                    *ngIf="p.showLiveDemo !== false && p.liveDemoUrl"
                     [href]="p.liveDemoUrl"
                     [target]="state.previewMode() ? '_blank' : '_self'"
                     (click)="onLinkClick($event)"
-                    class="flex items-center gap-1.5 text-xs font-bold px-3 py-1.5 rounded-lg text-white"
+                    class="flex items-center gap-1.5 text-xs font-bold px-3 py-1.5 rounded-lg text-white transition-opacity hover:opacity-90"
                     [style.backgroundColor]="state.portfolio().colors.button"
                   >
                     Live Demo
                   </a>
                   <a
+                    *ngIf="p.showGithub !== false && p.githubUrl"
                     [href]="p.githubUrl"
                     [target]="state.previewMode() ? '_blank' : '_self'"
                     (click)="onLinkClick($event)"
-                    class="flex items-center gap-1.5 text-xs font-semibold px-3 py-1.5 rounded-lg border"
+                    class="flex items-center gap-1.5 text-xs font-semibold px-3 py-1.5 rounded-lg border transition-colors hover:bg-white/5"
                     [style.borderColor]="state.portfolio().colors.borderColor"
                     [style.color]="state.portfolio().colors.heading"
                   >

@@ -356,7 +356,17 @@ export class ZipExportService {
         const pr = p.projects;
         const projectsHtml = pr.projects
           .map(
-            (item) => `<div class="rounded-2xl border overflow-hidden shadow-xl flex flex-col" style="background-color: ${colors.cardBg}; border-color: ${colors.borderColor};">
+            (item) => {
+              const showLive = item.showLiveDemo !== false && !!item.liveDemoUrl;
+              const showGithub = item.showGithub !== false && !!item.githubUrl;
+              const buttonsContainerHtml = (showLive || showGithub)
+                ? `<div class="flex items-center gap-3 pt-2 border-t border-white/5">
+                    ${showLive ? `<a href="${item.liveDemoUrl}" target="_blank" class="flex items-center gap-1.5 text-xs font-bold px-3 py-1.5 rounded-lg text-white" style="background-color: ${colors.button};">Live Demo</a>` : ''}
+                    ${showGithub ? `<a href="${item.githubUrl}" target="_blank" class="flex items-center gap-1.5 text-xs font-semibold px-3 py-1.5 rounded-lg border" style="border-color: ${colors.borderColor}; color: ${colors.heading};">GitHub</a>` : ''}
+                  </div>`
+                : '';
+
+              return `<div class="rounded-2xl border overflow-hidden shadow-xl flex flex-col" style="background-color: ${colors.cardBg}; border-color: ${colors.borderColor};">
         <div class="h-48 overflow-hidden relative">
           <img src="${item.image}" alt="${item.title}" class="w-full h-full object-cover" />
         </div>
@@ -369,13 +379,11 @@ export class ZipExportService {
             <div class="flex flex-wrap gap-1.5">
               ${item.tags.map((t) => `<span class="text-[10px] px-2 py-0.5 rounded font-semibold bg-white/5" style="color: ${colors.primary};">${t}</span>`).join('')}
             </div>
-            <div class="flex items-center gap-3 pt-2 border-t border-white/5">
-              ${item.liveDemoUrl ? `<a href="${item.liveDemoUrl}" target="_blank" class="flex items-center gap-1.5 text-xs font-bold px-3 py-1.5 rounded-lg text-white" style="background-color: ${colors.button};">Live Demo</a>` : ''}
-              ${item.githubUrl ? `<a href="${item.githubUrl}" target="_blank" class="flex items-center gap-1.5 text-xs font-semibold px-3 py-1.5 rounded-lg border" style="border-color: ${colors.borderColor}; color: ${colors.heading};">GitHub</a>` : ''}
-            </div>
+            ${buttonsContainerHtml}
           </div>
         </div>
-      </div>`
+      </div>`;
+            }
           )
           .join('\n');
 

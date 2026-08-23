@@ -12,13 +12,25 @@ import { IconComponent } from '../../../shared/components/icon/icon.component';
   template: `
     <div class="space-y-5">
       <div class="flex items-center justify-between pb-3 border-b border-slate-800">
-        <h3 class="text-sm font-bold text-indigo-400 uppercase tracking-wider">Honors & Achievements Editor</h3>
-        <button
-          (click)="addAchievement()"
-          class="flex items-center gap-1.5 text-xs font-bold text-white bg-indigo-600 hover:bg-indigo-500 px-3 py-1.5 rounded-lg transition-colors cursor-pointer shadow-sm"
-        >
-          <app-icon name="plus" [size]="14"></app-icon> Add Honor Card
-        </button>
+        <h3 class="text-sm font-bold text-indigo-400 uppercase tracking-wider">Achievements Section</h3>
+        <div class="flex items-center gap-2">
+          <button
+            type="button"
+            (click)="state.toggleSectionVisibility('achievements')"
+            class="flex items-center gap-1.5 text-xs font-bold px-2.5 py-1.5 rounded-lg border transition-all cursor-pointer shadow-sm"
+            [ngClass]="state.portfolio().achievements.visible ? 'bg-slate-800 border-slate-700 text-slate-200 hover:bg-slate-700' : 'bg-rose-950/80 border-rose-800 text-rose-300 hover:bg-rose-900'"
+            [title]="state.portfolio().achievements.visible ? 'Hide Achievements section' : 'Show Achievements section'"
+          >
+            <app-icon [name]="state.portfolio().achievements.visible ? 'eye' : 'eye-off'" [size]="14"></app-icon>
+            <span>{{ state.portfolio().achievements.visible ? 'Hide Section' : 'Show Section' }}</span>
+          </button>
+          <button
+            (click)="addAchievement()"
+            class="flex items-center gap-1.5 text-xs font-bold text-white bg-indigo-600 hover:bg-indigo-500 px-3 py-1.5 rounded-lg transition-colors cursor-pointer shadow-sm"
+          >
+            <app-icon name="plus" [size]="14"></app-icon> Add Honor
+          </button>
+        </div>
       </div>
 
       <!-- Title & Title Color -->

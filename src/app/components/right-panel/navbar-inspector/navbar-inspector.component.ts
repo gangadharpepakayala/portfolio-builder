@@ -12,8 +12,20 @@ import { IconComponent } from '../../../shared/components/icon/icon.component';
   template: `
     <div class="space-y-5">
       <div class="flex items-center justify-between pb-3 border-b border-slate-800">
-        <h3 class="text-sm font-bold text-indigo-400 uppercase tracking-wider">Navbar & Menu Links</h3>
-        <span class="text-xs bg-indigo-500/10 text-indigo-400 px-2.5 py-1 rounded font-mono font-bold">navbar</span>
+        <div class="flex items-center gap-2">
+          <h3 class="text-sm font-bold text-indigo-400 uppercase tracking-wider">Navbar & Menu Links</h3>
+          <span class="text-xs bg-indigo-500/10 text-indigo-400 px-2 py-0.5 rounded font-mono font-bold">navbar</span>
+        </div>
+        <button
+          type="button"
+          (click)="state.toggleSectionVisibility('navbar')"
+          class="flex items-center gap-1.5 text-xs font-bold px-2.5 py-1 rounded-lg border transition-all cursor-pointer shadow-sm"
+          [ngClass]="state.portfolio().navbar.visible ? 'bg-slate-800 border-slate-700 text-slate-200 hover:bg-slate-700' : 'bg-rose-950/80 border-rose-800 text-rose-300 hover:bg-rose-900'"
+          [title]="state.portfolio().navbar.visible ? 'Hide Navbar section' : 'Show Navbar section'"
+        >
+          <app-icon [name]="state.portfolio().navbar.visible ? 'eye' : 'eye-off'" [size]="14"></app-icon>
+          <span>{{ state.portfolio().navbar.visible ? 'Hide Section' : 'Show Section' }}</span>
+        </button>
       </div>
 
       <!-- Logo Text & Logo Color -->
