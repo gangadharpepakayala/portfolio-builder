@@ -145,13 +145,13 @@ export class ZipExportService {
     const n = p.navbar;
     const linksHtml = n.links
       .filter((l) => l.visible)
-      .map((l) => `<a href="#${l.sectionId}" class="text-sm font-semibold hover:text-indigo-400 transition-colors" style="color: ${n.menuColor}">${l.label}</a>`)
+      .map((l) => `<a href="#${l.sectionId}" class="text-xs sm:text-sm font-semibold whitespace-nowrap hover:text-indigo-400 transition-colors" style="color: ${n.menuColor}">${l.label}</a>`)
       .join('\n');
 
     return `<header class="w-full ${n.isSticky ? 'sticky top-0' : ''} z-50 backdrop-blur-md border-b border-white/5 py-4 px-6" style="background-color: ${n.bgColor || p.colors.navbarBg}">
-  <div class="max-w-6xl mx-auto flex items-center justify-between">
-    <a href="#" class="text-xl font-extrabold tracking-tight" style="color: ${n.logoColor || p.colors.heading}">${n.logoText}</a>
-    <nav class="hidden md:flex items-center gap-8">
+  <div class="max-w-6xl mx-auto flex items-center justify-between gap-4">
+    <a href="#" class="text-xl sm:text-2xl font-extrabold tracking-tight shrink-0 mr-2" style="color: ${n.logoColor || p.colors.heading}">${n.logoText}</a>
+    <nav class="hidden md:flex items-center gap-x-3 sm:gap-x-4 lg:gap-x-6 gap-y-1 flex-wrap justify-end">
       ${linksHtml}
     </nav>
     <button id="navToggle" class="md:hidden p-2 text-slate-200" aria-label="Toggle Navigation">
